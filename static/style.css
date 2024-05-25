@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    margin: 0;
+    background-color: #fadefa;
+}
+nav{
+    margin-bottom: 20px;
+    height:50px;
+    background: #ec786d;
+}
+.file{
+    padding:50px;
+}
+#pageTitle{
+    color:#229091;;
+}
+
+.fileZone{
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #498283;
+    padding: 30px 30px 20px 30px;
+    border-radius: 27px;
+}
+.dragZone{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin:0 10px;
+    padding:5px 0;
+    width:100%;
+    border-radius: 15px;
+    border-width: 2px;
+    border-style: dashed;
+    border-color: #235051;
+    background:#66b6b8;
+
+}
+.dragZone.selected {
+    /* Add your desired styles for the selected state here */
+    border-color: green; /* Example: change border color to green */
+    background-color: #eee; /* Example: add light background */
+    
+}
+img{
+    width:200px;
+    &:hover{
+        transform: scale(1.03);
+        transition: all 0.4s;
+    }
+}
+span{
+    margin:5px;
+    color: rgb(255, 255, 255);
+    font-weight: 550;
+}
+p{
+    text-align: center;
+    height: 1em;
+}
+.btn{
+    margin: 20px;
+    padding:5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+button {
+    border-radius: 5px;
+    position: relative;
+    align-self: center;
+    --c:  #229091; /* the color*/
+    height:fit-content;
+    padding:5px;
+    margin: 5px;
+    box-shadow: 0 0 0 .1em inset var(--c); 
+    --_g: linear-gradient(var(--c) 0 0) no-repeat;
+    background: 
+      var(--_g) calc(var(--_p,0%) - 100%) 0%,
+      var(--_g) calc(200% - var(--_p,0%)) 0%,
+      var(--_g) calc(var(--_p,0%) - 100%) 100%,
+      var(--_g) calc(200% - var(--_p,0%)) 100%;
+    background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+    outline-offset: .1em;
+    transition: background-size .4s, background-position 0s .4s;
+  }
+  button:hover {
+    --_p: 100%;
+    transition: background-position .4s, background-size 0s;
+  }
+  button:active {
+    box-shadow: 0 0 9e9q inset #0009; 
+    background-color: var(--c);
+    color: #fff;
+  }  
+  button {
+    font-family: system-ui, sans-serif;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: .2em .6em;
+    font-weight: bold;  
+    border: none;
+  }
+#analyse{
+    --c:  #ec786d;
+    display: none;
+}

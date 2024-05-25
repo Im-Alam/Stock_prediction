@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="icon" href="../static/image/finance_mode_40dp_FILL0_wght400_GRAD0_opsz40.svg">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <nav>
+
+    </nav>
+
+    <div clsass="file">
+        <h2 id="pageTitle">Upload your csv file here</h2>
+        <div class="fileZone">
+            <div class="dragZone">
+                <span id="info">Drag file here</span>
+                <input type="file" accept=".csv" id="fileInput" hidden>
+                <div class="drag">
+                    <img src="../static/image/add.svg" alt="add">
+                </div>  
+            </div>
+            <span>OR</span>
+            <span style="font-weight: 400;">Click to select file from device</span>
+        </div>
+    </div>
+    <p id="report"></p>
+    <div class="btn">
+        <button type="submit" id="upload">Upload</button>
+        <button type="submit" id="analyse">Analyse</button>
+    </div>
+    <script src="../static/script.js"></script>
+</body>
+</html>
