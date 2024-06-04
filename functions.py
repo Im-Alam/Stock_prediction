@@ -44,7 +44,6 @@ class FindPattern:
         # data is a dataframe
         self.data_ = data_
 
-
     def hammerAndHang_man(self):
         table = self.data_.copy()
         table.columns = [col.lower() for col in table.columns]
@@ -68,7 +67,6 @@ class FindPattern:
                 hammer_indices.append(0)
                 
         return hammer_indices
-
 
     def CupAndHandle(self):
         pass
