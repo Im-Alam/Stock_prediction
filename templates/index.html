@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="../static/style.css">
     <link rel="icon" href="../static/image/finance_mode_40dp_FILL0_wght400_GRAD0_opsz40.svg">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
 </head>
 <body>
-    <nav>
-
-    </nav>
+    {%include 'navbar.html'%}
 
     <div clsass="file">
         <h2 id="pageTitle">Upload your csv file here</h2>
@@ -32,6 +32,15 @@
         <button type="submit" id="upload">Upload</button>
         <button type="submit" id="analyse">Analyse</button>
     </div>
+
+    <div id="candlestick-chart"></div>
+
+    {%include 'footer.html'%}
+    <script>
+        const chartData = {{ data | tojson | safe }};
+    </script>
+    <script src="../static/charts.js"></script>
     <script src="../static/script.js"></script>
+    
 </body>
 </html>

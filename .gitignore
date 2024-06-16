@@ -2,3 +2,5 @@ Stockenv
 test.py
 test.ipynb
 uploads
+.env
+charts.html
