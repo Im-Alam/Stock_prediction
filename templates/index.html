@@ -32,10 +32,21 @@
         <button type="submit" id="upload">Upload</button>
         <button type="submit" id="analyse">Analyse</button>
     </div>
-
+    <h3>NIFTY 50</h3>
     <div id="candlestick-chart"></div>
 
+    <!-- Performacnce of other indices -->
+
+    <!-- Radial chart -->
+    <h3>Market Share of Investment options</h3>
+    <div class="radial-chart-class">
+        <div id ="radial-chart"></div>
+        <div id="radial-chart-despcription"></div>
+    </div>
+
+
     {%include 'footer.html'%}
+
     <script>
         const chartData = {{ data | tojson | safe }};
     </script>

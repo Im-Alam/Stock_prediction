@@ -5,10 +5,104 @@ body {
     background-color: #fadefa;
 }
 nav{
-    margin-bottom: 20px;
-    height:50px;
-    background: #ec786d;
+    margin: 0 -30px 20px -30px;
+    height:100px;
+    padding:10px;
+    
+    background-image: linear-gradient(to right, rgb(250, 250, 250), rgba(255, 255, 255, 0));
+    img{
+        position:absolute;
+        right:20px;
+        top: 10px;
+        &:hover{
+            transform:none;
+        }
+    }
+    h3{
+        color:#229091;
+        font-size: 2rem;
+        font-weight: 800;
+        margin:31px 20px;
+    }
 }
+
+footer{
+    background-color: #eee;
+    padding:20px;
+    margin: 15px -30px;
+    height:fit-content;
+    border-bottom: #498283;
+    #logoText{
+        color:#229091;
+        font-size: 2rem;
+        font-weight: 800;
+        margin:10px 0;
+    }
+    img{
+        border-radius:70px;
+        width: 50px;
+        padding: 7px;
+    }
+    .copyright{
+        background-color: rgb(187, 184, 184);
+        font-size: 1rem;
+        font-family: monospace;
+        padding: 2px;
+        margin:10px -20px 0 -20px;
+    }
+    .row-primary{
+        display:flex;
+
+    }
+    
+    .column-about{
+        width: 50%;
+        p{
+            color:#498283;
+            font-weight: 400px;
+            text-align: left;
+            padding: 0 0 10px 0;
+        }
+    }
+    .feedback{
+        width:25%;
+        padding:5px;
+        h3{
+            margin:5px 0;
+            color:#ec786d;
+            font-size: 1.2rem;
+        }
+        .btn{
+            margin:5px 0;
+            border-radius: 4px;
+            height:fit-content;
+            padding:3px;
+            font-size: 1rem;
+        }
+    }
+    textarea{
+        border: none;
+        padding: 8px;
+        height: 4rem;
+        border-radius: 5px;
+        width: 90%;
+        height: 80px;
+        resize: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.9rem;
+    }
+    .social{
+        padding: 5px;
+        margin-left: 10px;
+
+    }
+    #contact-us{
+        margin-left: 10px;
+        font-size: 1.2rem;
+        color:rgb(77, 77, 243);
+    }
+}
+
 .file{
     padding:50px;
 }
@@ -37,8 +131,8 @@ nav{
     border-radius: 15px;
     border-width: 2px;
     border-style: dashed;
-    border-color: #235051;
-    background:#66b6b8;
+    border-color: #ffffff;
+    background:#57a3a4;
 
 }
 .dragZone.selected {
