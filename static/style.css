@@ -23,6 +23,13 @@ nav{
         font-size: 2rem;
         font-weight: 800;
         margin:31px 20px;
+        display: inline-block;
+    }
+    h4{
+        position:relative;
+        display: inline-block;
+        left:50%;
+        top:0px;
     }
 }
 
@@ -42,6 +49,7 @@ footer{
         border-radius:70px;
         width: 50px;
         padding: 7px;
+        margin-top:13px;
     }
     .copyright{
         background-color: rgb(187, 184, 184);
@@ -90,6 +98,7 @@ footer{
         resize: none;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 0.9rem;
+        color: #646464;
     }
     .social{
         padding: 5px;
@@ -97,9 +106,9 @@ footer{
 
     }
     #contact-us{
-        margin-left: 10px;
+        margin: 10px 0 0 10px;
         font-size: 1.2rem;
-        color:rgb(77, 77, 243);
+        color:rgb(108, 108, 250);
     }
 }
 
@@ -199,6 +208,17 @@ button {
     padding: .2em .6em;
     font-weight: bold;  
     border: none;
+  }
+
+  .radial-chart-class{
+    display: flex;
+  }
+  #radial-chart{
+    width: 45%;
+  }
+  #radar-comparison{
+    width: 50%;
+    margin-left: 5%;
   }
 #analyse{
     --c:  #ec786d;

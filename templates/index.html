@@ -13,20 +13,8 @@
 <body>
     {%include 'navbar.html'%}
 
-    <div clsass="file">
-        <h2 id="pageTitle">Upload your csv file here</h2>
-        <div class="fileZone">
-            <div class="dragZone">
-                <span id="info">Drag file here</span>
-                <input type="file" accept=".csv" id="fileInput" hidden>
-                <div class="drag">
-                    <img src="../static/image/add.svg" alt="add">
-                </div>  
-            </div>
-            <span>OR</span>
-            <span style="font-weight: 400;">Click to select file from device</span>
-        </div>
-    </div>
+    {%include 'file_upload.html'%}
+
     <p id="report"></p>
     <div class="btn">
         <button type="submit" id="upload">Upload</button>
@@ -37,13 +25,20 @@
 
     <!-- Performacnce of other indices -->
 
-    <!-- Radial chart -->
-    <h3>Market Share of Investment options</h3>
+    <!-- Radial charts -->
+    <h3>Market Radar</h3>
     <div class="radial-chart-class">
         <div id ="radial-chart"></div>
-        <div id="radial-chart-despcription"></div>
+        <div id="radar-comparison"></div>
     </div>
 
+    <h3>Investor distribution(FII,DII,MF,RI etc)</h3>
+
+    <h3>IPOs</h3>
+
+    <h3>Hot Topics(News scrap)</h3>
+    
+    {%include 'news.html'%}
 
     {%include 'footer.html'%}
 

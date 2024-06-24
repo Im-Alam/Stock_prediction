@@ -64,3 +64,53 @@ function plotCandlestickChart(data) {
         }
     });
 }
+
+
+data2 = [
+    {
+    type: 'scatterpolar',
+    r: [39, 28, 8, 7, 28, 39],
+    theta: ['A','B','C', 'D', 'E', 'A'],
+    fill: 'toself',
+    name: 'Group A',
+    line: {shape:'spline'}
+    },
+    {
+    type: 'scatterpolar',
+    r: [1.5, 10, 39, 31, 15, 1.5],
+    theta: ['A','B','C', 'D', 'E', 'A'],
+    fill: 'toself',
+    name: 'Group B',
+    line: {shape:'spline'}
+    }
+  ]
+  
+  layout = {
+    polar: {
+      radialaxis: {
+        visible: true,
+        range: [0, 50]
+      }
+    },
+    showlegend: false,
+    paper_bgcolor: 'transparent',
+    margin: {l:20, r:20, t:30, b:20}
+  }
+  Plotly.newPlot("radial-chart", data2, layout)
+  
+
+
+
+
+//Timeseries plot
+var data = [
+    {
+      x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+      y: [1, 3, 6],
+      type: 'scatter'
+    }
+  ];
+  
+  
+  Plotly.newPlot('radar-comparison', data);
+  
