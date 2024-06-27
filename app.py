@@ -1,6 +1,11 @@
 from flask import Flask, request, render_template, jsonify
 import os  # for os.path functions
+from dotenv import load_dotenv
 
+#Below function runs and load environment variables into os
+load_dotenv()
+
+#Creation of app
 app = Flask(__name__)
 
 # Configure upload folder (adjust as needed)
@@ -57,5 +62,7 @@ def analyse(fileName):
     return render_template('analysis.html', data = {'fileName': fileName})
 
 
+
+PORT_NO = int(os.getenv('PORT', 5000))#Default to 5000 if PORT not found
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port = PORT_NO, debug=True)

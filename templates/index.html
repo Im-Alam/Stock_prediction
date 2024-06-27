@@ -20,11 +20,14 @@
         <button type="submit" id="upload">Upload</button>
         <button type="submit" id="analyse">Analyse</button>
     </div>
+
+
     <h3>NIFTY 50</h3>
     <div id="candlestick-chart"></div>
 
     <!-- Performacnce of other indices -->
-
+    <div id="international_exchange_corr"></div>
+    
     <!-- Radial charts -->
     <h3>Market Radar</h3>
     <div class="radial-chart-class">
@@ -32,13 +35,23 @@
         <div id="radar-comparison"></div>
     </div>
 
+
+    <h3>What's in Primary Market: IPOs</h3>
+
+    {%include 'IPOs.html'%}
+
     <h3>Investor distribution(FII,DII,MF,RI etc)</h3>
 
-    <h3>IPOs</h3>
+    <div class="market_dist">
+        <div id="donut_chart"></div>
+        <div id="market_share_timeline"></div>
+    </div>
+    
+    
 
     <h3>Hot Topics(News scrap)</h3>
     
-    {%include 'news.html'%}
+    <div>{%include 'news.html'%}</div>
 
     {%include 'footer.html'%}
 

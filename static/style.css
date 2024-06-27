@@ -3,7 +3,25 @@ body {
     padding: 30px;
     margin: 0;
     background-color: #fadefa;
+    /* transform: scale(0.8);
+    transform-origin: 0 0; /* Keeps the top left corner fixed */
+    /* width: 120%; Compensates for the scale down to keep the layout width */
+    /* height:fit-content; */ */
+
 }
+
+:root {
+    --h3-color:#752460;
+    --footer-bg-color: #eeeeee;
+    --logo-color: #229091;
+    --copyright-panel-color:#bbb8b8;
+    --news-panel-color:#d5d7d5;
+    --news-sentiment-color: #ff6464;
+    --news-panel-green:#43f973;
+}
+
+
+
 nav{
     margin: 0 -30px 20px -30px;
     height:100px;
@@ -22,8 +40,10 @@ nav{
         color:#229091;
         font-size: 2rem;
         font-weight: 800;
+        font-family: Arial, Helvetica, sans-serif;
         margin:31px 20px;
         display: inline-block;
+        border-bottom-style: none;
     }
     h4{
         position:relative;
@@ -33,14 +53,19 @@ nav{
     }
 }
 
+
 footer{
-    background-color: #eee;
+    background-color: var(--footer-bg-color);
     padding:20px;
-    margin: 15px -30px;
+    margin: 55px -30px 10px -30px;
     height:fit-content;
     border-bottom: #498283;
+    h3{
+        border-bottom-style: none;
+        font-family:Arial, Helvetica, sans-serif;
+    }
     #logoText{
-        color:#229091;
+        color: var(--logo-color);
         font-size: 2rem;
         font-weight: 800;
         margin:10px 0;
@@ -52,7 +77,7 @@ footer{
         margin-top:13px;
     }
     .copyright{
-        background-color: rgb(187, 184, 184);
+        background-color: var(--copyright-panel-color);
         font-size: 1rem;
         font-family: monospace;
         padding: 2px;
@@ -65,6 +90,9 @@ footer{
     
     .column-about{
         width: 50%;
+        h3{
+            padding-left: 0;
+        }
         p{
             color:#498283;
             font-weight: 400px;
@@ -79,6 +107,7 @@ footer{
             margin:5px 0;
             color:#ec786d;
             font-size: 1.2rem;
+            
         }
         .btn{
             margin:5px 0;
@@ -220,7 +249,84 @@ button {
     width: 50%;
     margin-left: 5%;
   }
+  .market_dist{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    #donut_chart{
+        width:40%;
+        display: flex;
+        /* justify-content: center;
+        align-items: center; */
+    }
+    #market_share_timeline{
+        width:50%;
+    }
+  }
+
+
+
+
 #analyse{
     --c:  #ec786d;
     display: none;
+}
+
+h3{
+    color: var(--h3-color);
+    border-bottom-style: solid;
+    border-width: 2px;
+    padding:5px;
+    margin: 30px 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+}
+
+.news_block{
+    margin:15px 0;
+    padding: 10px;
+    background-color: var(--news-panel-color);
+    border-radius: 10px;
+    display:flex;
+    flex-direction: row;
+    max-height: 400px;
+
+    a{
+        text-decoration: none;
+    }
+
+    .content{
+        display: flex;
+        flex-direction: column;
+       
+    }
+    #news_color{
+        background-color:var(--news-sentiment-color);
+        width: 15px;
+        margin:5px 10px;
+    }
+    .headline h4{
+        color:#282966;
+        padding: 0;
+        margin:8px 5px 5px 0px;
+        display: inline-block;
+
+    }
+    .content{
+        p{
+            text-align: left;
+            color:#424242;
+            flex:1;
+            /* padding:5px 0; */
+        }
+    }
+    .sentiment{
+        p{
+            text-align: left;
+            margin-top:10px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color:#048284;
+            flex:1;
+        }
+    }
 }

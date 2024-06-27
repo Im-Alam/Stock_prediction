@@ -1,3 +1,6 @@
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Sample data for demonstration
     const data = {
@@ -110,7 +113,82 @@ var data = [
       type: 'scatter'
     }
   ];
+  layout = {
+    margin: {
+      r: 10,
+      t: 25,
+      b: 40,
+      l: 60
+  },
+  }
   
+  Plotly.newPlot('radar-comparison', data, layout);
+
+
+  //Donut chart
+  var data = [{
+    values: [16, 15, 12, 6, 5, 4, 42],
+    labels: ['US', 'China', 'European Union', 'Russian Federation', 'Brazil', 'India', 'Rest of World' ],
+    domain: {column: 0},
+    name: 'GHG Emissions',
+    hoverinfo: 'label+percent+name',
+    hole: .4,
+    type: 'pie'
+  }];
   
-  Plotly.newPlot('radar-comparison', data);
+  var layout = {
+    title: 'Indian Market Participants',
+    paper_bgcolor: 'transparent',
+    margin: {
+      r: 20,
+      t: 40,
+      b: 20,
+      l: 100
+    },
+    annotations: [
+      {
+        font: {
+          size: 15
+        },
+        showarrow: false,
+        text: 'INDIA',
+        x: 0.19,
+        y: 0.5
+      }    
+    ],
+    height: 400,
+    width: 600,
+    showlegend: false,
+    grid: {rows: 1, columns: 2}
+  };
   
+  Plotly.newPlot('donut_chart', data, layout);
+  
+
+
+
+
+//Timeseries for market share
+var data = [
+  {
+    x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+    y: [1, 3, 6],
+    type: 'scatter'
+  },
+  {
+    x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+    y: [3, 2, 4],
+    type: 'scatter'
+  }
+];
+
+layout = {
+  margin: {
+    r: 10,
+    t: 25,
+    b: 40,
+    l: 60
+},
+}
+
+Plotly.newPlot('market_share_timeline', data, layout);
