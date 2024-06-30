@@ -192,3 +192,48 @@ layout = {
 }
 
 Plotly.newPlot('market_share_timeline', data, layout);
+
+
+
+
+//HEATMAP
+var data5 = [
+  {
+    z: [[1, 4, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
+    x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    y: ['Morning', 'Afternoon', 'Evening'],
+
+  }];
+
+let default_layout = {
+    title: 'Current Correlation',
+    annotations:[],
+    xaxis: {
+      ticks: '',
+      side: 'bottom'
+    },
+    yaxis: {
+      ticks: '',
+      ticksuffix: ' ',
+      width: 700,
+      height: 700,
+      autosize: false
+    },
+    margin: {
+      r: 10,
+      t: 40,
+      b: 60,
+      l: 60
+    },
+    paper_bgcolor: 'transparent',
+};
+
+function plotHeatMap(id_, data, layout=default_layout){
+  data[0].type ='heatmap'
+  data[0].colorscale = 'Viridis'
+  data[0].hoverongaps = false
+
+  Plotly.newPlot(id_, data, layout)
+
+}
+plotHeatMap(id_='current_month_corr', data = data5)

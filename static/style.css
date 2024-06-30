@@ -9,7 +9,6 @@ body {
     /* height:fit-content; */ */
 
 }
-
 :root {
     --h3-color:#752460;
     --footer-bg-color: #eeeeee;
@@ -195,6 +194,10 @@ p{
     text-align: center;
     height: 1em;
 }
+
+
+
+/* BUTTON */
 .btn{
     margin: 20px;
     padding:5px;
@@ -239,6 +242,8 @@ button {
     border: none;
   }
 
+
+/* CHARTS */
   .radial-chart-class{
     display: flex;
   }
@@ -330,3 +335,118 @@ h3{
         }
     }
 }
+
+
+
+/* Timeline CSS */
+.timeline_class{
+    width:40%;
+}
+.timeline {
+    position: relative;
+    margin: 0 auto;
+    width: 90%;
+    
+}
+.timeline ul li {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.point {
+    min-width: 15px;
+    height: 15px;
+    background-color: #be9fe1;
+    border-radius: 100%;
+    z-index: 2;
+    border: 3px #333333 solid;
+    position: relative;
+    margin:0 10px;
+}
+.timeline ul li .content {
+    max-width: 90%;
+    height:100px;
+    padding: 0 10px;
+}
+
+.timeline ul li{
+    width: 50%;
+    padding: 0 20px;
+    font-weight: normal;
+}
+.timeline ul li .content h3 {
+    padding: 8px 15px;
+    font-size: .8rem;
+    background-color: #c6a4ed;
+    margin-bottom: 0;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.timeline ul li .content p {
+    font-size: .8rem;
+    color:#424242;
+    padding: 10px 20px;
+    background-color: #e1d9ec;
+    margin-top: 0;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    flex:1;
+    
+}
+.timeline::before {
+    content: "";
+    position: absolute;
+    height: 118%;
+    width: 3px;
+    left: 79px;
+    background-color: #333333;
+}
+
+
+
+
+table{
+    overflow: hidden;
+    border-radius:10px;
+    border-collapse: collapse;
+}
+table tr th{
+    background-color: #be9fe1;
+    border-bottom-style: solid ;
+    border-color: #752460;
+    border-bottom-width: 2px;
+    margin: 0;
+
+    p{
+        padding:8px 15px;
+        margin:0;
+        font-size: .75rem;
+        color:#752460;
+    }
+}
+table tr td{
+    background-color: #d5d7d5;
+    border-top-style: solid ;
+    border-color: #fadefa;
+    border-top-width: 1px;
+    p{
+        color:#646464;
+        font-size: .7rem;
+        padding:7px 14px;
+        margin:0;
+    }
+}
+tbody tr {
+    transition: background-color 0.25s ease-in-out;
+}
+tbody tr:hover td{
+    background-color: #c9d7c9; 
+}
+
+
+

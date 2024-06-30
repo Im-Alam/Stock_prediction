@@ -25,8 +25,6 @@
     <h3>NIFTY 50</h3>
     <div id="candlestick-chart"></div>
 
-    <!-- Performacnce of other indices -->
-    <div id="international_exchange_corr"></div>
     
     <!-- Radial charts -->
     <h3>Market Radar</h3>
@@ -37,8 +35,17 @@
 
 
     <h3>What's in Primary Market: IPOs</h3>
-
-    {%include 'IPOs.html'%}
+    <div class="live_ipo">
+        All live ipos
+        <div class="ipo_comparison">
+            <!-- Parallel bar carts comparing issue size-->
+            <!-- Bar chart comparing distribution among etailers, dii, fii, etc -->
+            <!-- Comparison of subscription rate: No of lots purchased in given time on line chart -->
+            <!--  -->
+        </div>
+        <div class="timeline_class">{%include 'timeline.ipo.html'%}</div>
+        <div class="ipo_info">{%include 'table.ipo.html'%}</div>
+    </div>
 
     <h3>Investor distribution(FII,DII,MF,RI etc)</h3>
 
@@ -47,6 +54,12 @@
         <div id="market_share_timeline"></div>
     </div>
     
+
+    <h3>Correlation of India with foriegn exchanges</h3>
+    <div class="international_corr">
+        <div id="current_month_corr"></div>
+        <div id="last_month_corr"></div>
+    </div>
     
 
     <h3>Hot Topics(News scrap)</h3>
