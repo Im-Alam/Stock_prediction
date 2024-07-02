@@ -22,25 +22,25 @@ body {
 
 
 nav{
-    margin: 0 -30px 20px -30px;
-    height:100px;
+    margin: 0 -30px 0 -30px;
+    height:55px;
     padding:10px;
-    
     background-image: linear-gradient(to right, rgb(250, 250, 250), rgba(255, 255, 255, 0));
+    position: sticky;
     img{
         position:absolute;
         right:20px;
-        top: 10px;
+        top: 30px;
         &:hover{
             transform:none;
         }
     }
     h3{
         color:#229091;
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: 800;
         font-family: Arial, Helvetica, sans-serif;
-        margin:31px 20px;
+        margin:auto 20px;
         display: inline-block;
         border-bottom-style: none;
     }
@@ -143,9 +143,7 @@ footer{
 .file{
     padding:50px;
 }
-#pageTitle{
-    color:#229091;;
-}
+
 
 .fileZone{
     display: flex;
@@ -235,10 +233,10 @@ button {
   }  
   button {
     font-family: system-ui, sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    padding: .2em .6em;
-    font-weight: bold;  
+    padding: .3em .7em;
+    font-weight: 500;  
     border: none;
   }
 
@@ -450,3 +448,90 @@ tbody tr:hover td{
 
 
 
+.login_container{
+    background: #c6a4ed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    width:330px;
+    padding:20px;
+    margin:40px auto;
+
+    h3{
+        margin:35px;
+        font-size: 2rem;
+        display:block;
+        text-decoration: none;
+        border-bottom-style:none ;
+    }
+    .user_details{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    input{
+        display:block;
+        width:260px;
+        margin:5px 20px;
+        padding:5px 10px;
+        border-radius: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #7b6791;
+        background: #fadefa;
+        color:#333333;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+
+    }
+    label{
+        margin:5px 20px;
+        padding:5px;
+        color:#2a2a2a;
+        font-weight: 800;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+    #loginSubmitBtn{
+        display: flex;
+        justify-content: flex-start;
+    }
+    .SbmtBtn {
+        font-weight: 550;
+        width:100px;
+        margin:20px;
+        border-width:2px;
+        border-color: #229091;
+        background-color: #ffffff00;
+        &:hover{
+            background-color:#229091 ;
+
+        }
+        &:active {
+            box-shadow: 0 0 9e9q inset #0009; 
+            background-color: var(--c);
+            color: #fff;
+        }
+
+    }
+    .dontHaveAc{
+        display:flex;
+        justify-content: space-between;
+        button{
+            font-size: 1rem;
+            
+        }
+    }
+    #password{
+        letter-spacing: .5rem;
+        font-weight: 800;      
+    }
+    hr{
+        height: 1px;
+        width:300px;
+        background: #752460;
+        margin: 15px auto;
+        box-shadow: none;
+        border:none;
+        
+    }
+}
