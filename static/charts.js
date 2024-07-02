@@ -1,94 +1,75 @@
+const plotCandlestickChart = function(id_, data, layout_= {}) {
+  /*Data format has to be object as below !important*****
+  {
+    dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05'],
+    open: [100, 110, 105, 115, 112],
+    high: [120, 125, 118, 130, 118],
+    low: [95, 105, 100, 110, 105],
+    close: [115, 120, 112, 125, 110]
+  }
+  */
 
+  var trace = {
+    x: data.dates,
+    close: data.close,
+    decreasing: {line: {color: 'red'}},
+    high: data.high,
+    increasing: {line: {color: 'green'}},
+    low: data.low,
+    open: data.open,
+    type: 'candlestick',
+    xaxis: 'x',
+    yaxis: 'y'
+  };
 
+  var layout = {
+    dragmode: 'zoom',
+    margin: {
+      r: 10,
+      t: 25,
+      b: 40,
+      l: 60
+    },
+    showlegend: false,
+    xaxis: {
+      autorange: true,
+      title: 'Date',
+    },
+    yaxis: {
+      autorange: true,
+      title: 'Price',
+      type: 'linear'
+    }
+  };
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Sample data for demonstration
-    const data = {
-        dates: ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05'],
-        open: [100, 110, 105, 115, 112],
-        high: [120, 125, 118, 130, 118],
-        low: [95, 105, 100, 110, 105],
-        close: [115, 120, 112, 125, 110]
-    };
+  var config = {responsive: true};
 
-    // Plot candlestick chart
-    plotCandlestickChart(data);
-});
+  Object.assign(layout, layout_);
 
-function plotCandlestickChart(data) {
-    var trace = {
-        x: data.dates,
-        close: data.close,
-        decreasing: {line: {color: 'red'}},
-        high: data.high,
-        increasing: {line: {color: 'green'}},
-        low: data.low,
-        open: data.open,
-        type: 'candlestick',
-        xaxis: 'x',
-        yaxis: 'y'
-    };
+  Plotly.newPlot(id_, [trace], layout, config);
 
-    var layout = {
-        dragmode: 'zoom',
-        margin: {
-            r: 10,
-            t: 25,
-            b: 40,
-            l: 60
-        },
-        showlegend: false,
-        xaxis: {
-            autorange: true,
-            title: 'Date',
-        },
-        yaxis: {
-            autorange: true,
-            title: 'Price',
-            type: 'linear'
-        }
-    };
-
-    var config = {responsive: true};
-
-    Plotly.newPlot('candlestick-chart', [trace], layout, config);
-
-    // Display cursor position on hover
-    var cursorInfo = document.getElementById('cursor-position');
-    var candlestickChart = document.getElementById('candlestick-chart');
-
-    candlestickChart.on('plotly_hover', function(data) {
-        var point = data.points[0];
-        if (point) {
-            var xVal = point.x;
-            var yVal = point.y;
-
-            cursorInfo.textContent = `X: ${xVal}, Y: ${yVal}`;
-        }
-    });
 }
-
-
-data2 = [
+ 
+//Radar chart
+const plotRadarChart = function(id_, data_, layout_ = {}, name_){
+  /*
+  [
     {
-    type: 'scatterpolar',
     r: [39, 28, 8, 7, 28, 39],
     theta: ['A','B','C', 'D', 'E', 'A'],
-    fill: 'toself',
-    name: 'Group A',
-    line: {shape:'spline'}
-    },
-    {
-    type: 'scatterpolar',
-    r: [1.5, 10, 39, 31, 15, 1.5],
-    theta: ['A','B','C', 'D', 'E', 'A'],
-    fill: 'toself',
-    name: 'Group B',
-    line: {shape:'spline'}
     }
   ]
-  
-  layout = {
+  name_ = ['group a', 'group b']
+  */
+
+  for(let i = 0; i< data_.length; i++){
+    data_[i].type = 'scatterpolar'
+    data_[i].fill = 'toself'
+    data_[i].name = name_[i]
+    data_[i].line = {shape:'spline'}
+  }
+
+  const layout = {
     polar: {
       radialaxis: {
         visible: true,
@@ -99,45 +80,31 @@ data2 = [
     paper_bgcolor: 'transparent',
     margin: {l:20, r:20, t:30, b:20}
   }
-  Plotly.newPlot("radial-chart", data2, layout)
-  
+  Object.assign(layout, layout_);
 
+  Plotly.newPlot(id_, data_, layout);
+}
 
-
-
-//Timeseries plot
-var data = [
-    {
-      x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-      y: [1, 3, 6],
-      type: 'scatter'
-    }
-  ];
-  layout = {
-    margin: {
-      r: 10,
-      t: 25,
-      b: 40,
-      l: 60
-  },
-  }
-  
-  Plotly.newPlot('radar-comparison', data, layout);
-
-
-  //Donut chart
-  var data = [{
-    values: [16, 15, 12, 6, 5, 4, 42],
+//Donut chart
+const plotDonutChart = function(id_, data_, layout_ = {}, name_){
+  /*REQUIRED DATA FORMAT...
+  [{
+    values: [16, 15, 12, 6, 5, 4, 42],    //Sum up to 100
     labels: ['US', 'China', 'European Union', 'Russian Federation', 'Brazil', 'India', 'Rest of World' ],
     domain: {column: 0},
-    name: 'GHG Emissions',
-    hoverinfo: 'label+percent+name',
-    hole: .4,
-    type: 'pie'
-  }];
-  
+    
+  }]
+  */
+  for(let i=0; i<data_.length; i++){
+    data_[i].type = 'pie'
+    data_[i].hole = 0.4
+    data_[i].hoverinfo = 'label+percent'
+    data_[i].name = name_
+    data_.domain = {column:0}
+  }
+
   var layout = {
-    title: 'Indian Market Participants',
+    title: 'Set title in layout',
     paper_bgcolor: 'transparent',
     margin: {
       r: 20,
@@ -161,79 +128,72 @@ var data = [
     showlegend: false,
     grid: {rows: 1, columns: 2}
   };
-  
-  Plotly.newPlot('donut_chart', data, layout);
-  
 
+  Object.assign(layout, layout_);
 
+  Plotly.newPlot(id_, data_, layout)
 
-
-//Timeseries for market share
-var data = [
-  {
-    x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-    y: [1, 3, 6],
-    type: 'scatter'
-  },
-  {
-    x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-    y: [3, 2, 4],
-    type: 'scatter'
-  }
-];
-
-layout = {
-  margin: {
-    r: 10,
-    t: 25,
-    b: 40,
-    l: 60
-},
 }
 
-Plotly.newPlot('market_share_timeline', data, layout);
+const plotTimeSeriesChat = function(id_, data_, layout_ = {}){
+  /* DATA FORMAT
+  [
+    {
+      x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+      y: [1, 3, 6],
+    },
+    {
+      x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+      y: [3, 2, 4],
+    }
+  ]*/
+  for(let i=0; i<data_.length; i++){
+    data_[i].type = 'scatter'
+  };
 
+  const layout = {
+    margin: {l:20, r:20, t:30, b:20},
+  };
 
+  Object.assign(layout, layout_);
 
+  Plotly.newPlot(id_, data_, layout);
+}
 
-//HEATMAP
-var data5 = [
-  {
+const plotHeatMap = function (id_, data_, layout_ = {}){
+  /*
+  Required Data format
+  [{
     z: [[1, 4, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
     x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     y: ['Morning', 'Afternoon', 'Evening'],
 
-  }];
+  }]
+   */
+  //Data can be array also
+  for(let i=0; i<data_.length; i++){
+    data_[i].type ='heatmap'
+    data_[i].colorscale = 'Viridis'
+    data_[i].hoverongaps = false
+  }
 
-let default_layout = {
-    title: 'Current Correlation',
-    annotations:[],
-    xaxis: {
-      ticks: '',
-      side: 'bottom'
-    },
-    yaxis: {
-      ticks: '',
-      ticksuffix: ' ',
-      width: 700,
-      height: 700,
-      autosize: false
-    },
-    margin: {
-      r: 10,
-      t: 40,
-      b: 60,
-      l: 60
-    },
-    paper_bgcolor: 'transparent',
-};
+  const layout = {
+    margin: {l:20, r:20, t:30, b:20},
+    paper_bgcolor:'transparent'
+  };
 
-function plotHeatMap(id_, data, layout=default_layout){
-  data[0].type ='heatmap'
-  data[0].colorscale = 'Viridis'
-  data[0].hoverongaps = false
+  Object.assign(layout, layout_);
 
-  Plotly.newPlot(id_, data, layout)
+  Plotly.newPlot(id_, data_, layout);
 
 }
-plotHeatMap(id_='current_month_corr', data = data5)
+
+
+
+export {
+  plotHeatMap,
+  plotTimeSeriesChat,
+  plotDonutChart,
+  plotRadarChart,
+  plotCandlestickChart
+}
