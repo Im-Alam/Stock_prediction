@@ -9,6 +9,7 @@ body {
     /* height:fit-content; */ */
 
 }
+
 :root {
     --h3-color:#752460;
     --footer-bg-color: #eeeeee;
@@ -534,4 +535,36 @@ tbody tr:hover td{
         border:none;
         
     }
+}
+
+
+/* Ratio Bar_ */
+.bar{
+    min-width: 50px;
+}
+.label_{
+    display: flex;
+    justify-content: space-between;
+    p{
+        margin: 10px;
+        font-size: 0.8rem;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    #FI{
+        color:#ff6464;
+    }
+    #OFS{
+        color:#752460;
+    }
+}
+.bar_container{
+    background-color: #752460;
+    border-radius: 5px;
+    #b{
+        background-color: #ff6464;
+        height:10px;
+        border-radius: inherit;
+    }
+
+    
 }
