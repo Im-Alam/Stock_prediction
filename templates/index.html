@@ -61,6 +61,7 @@
         <div id="last_month_corr"></div>
     </div>
     
+    {%include 'recover.html'%}
 
     <h3>Hot Topics(News scrap)</h3>
     
@@ -71,7 +72,7 @@
     <script>
         const chartData = {{ data | tojson | safe }};
     </script>
-    <script src="../static/charts.js"></script>
+    <script src="../static/plotCharts.js"></script>
     <script src="../static/script.js"></script>
     
 </body>
