@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    padding: 30px;
+    padding: 10px 30px 30px 30px;
     margin: 0;
     background-color: #fadefa;
     /* transform: scale(0.8);
@@ -21,7 +21,13 @@ body {
 }
 
 
-
+input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+    border-color:#96dede;
+    outline-width: 1px;
+    outline-offset: -1px;
+    outline-color: #96dede;
+    outline-style: solid;
+}
 nav{
     margin: 0 -30px 0 -30px;
     height:55px;
@@ -66,7 +72,7 @@ footer{
     }
     #logoText{
         color: var(--logo-color);
-        font-size: 2rem;
+        font-size: 1.7rem;
         font-weight: 800;
         margin:10px 0;
     }
@@ -75,10 +81,13 @@ footer{
         width: 50px;
         padding: 7px;
         margin-top:13px;
+        &hover{
+            transition: all 0.2s;
+        }
     }
     .copyright{
         background-color: var(--copyright-panel-color);
-        font-size: 1rem;
+        font-size: 0.8rem;
         font-family: monospace;
         padding: 2px;
         margin:10px -20px 0 -20px;
@@ -98,6 +107,7 @@ footer{
             font-weight: 400px;
             text-align: left;
             padding: 0 0 10px 0;
+            font-size: 1rem;
         }
     }
     .feedback{
@@ -106,7 +116,7 @@ footer{
         h3{
             margin:5px 0;
             color:#ec786d;
-            font-size: 1.2rem;
+            font-size: 1rem;
             
         }
         .btn{
@@ -117,30 +127,39 @@ footer{
             font-size: 1rem;
         }
     }
-    textarea{
-        border: none;
-        padding: 8px;
-        height: 4rem;
-        border-radius: 5px;
-        width: 90%;
-        height: 80px;
-        resize: none;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 0.9rem;
-        color: #646464;
-    }
+    
+    
     .social{
         padding: 5px;
         margin-left: 10px;
-
+        display: flex;
+        flex-direction: row;
     }
     #contact-us{
         margin: 10px 0 0 10px;
-        font-size: 1.2rem;
+        font-size: 1rem;
         color:rgb(108, 108, 250);
     }
 }
 
+textarea{
+    border: none;
+    padding: 8px;
+    height: 4rem;
+    border-radius: 5px;
+    width: 90%;
+    height: 80px;
+    resize: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    color: #646464;
+    &:focus{
+        border:none;
+        outline-width: 1px;
+        outline-color: #96dede;
+        outline-style: solid
+    }
+}
 .file{
     padding:50px;
 }
@@ -269,14 +288,6 @@ button {
     }
   }
 
-
-
-
-#analyse{
-    --c:  #ec786d;
-    display: none;
-}
-
 h3{
     color: var(--h3-color);
     border-bottom-style: solid;
@@ -286,15 +297,28 @@ h3{
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
 }
 
-.news_block{
+.text_class{
+    flex-direction: column !important;
+    padding:20px !important;
+    background-color: #eaeaea !important;
+
+}
+
+.news_block, .text_class{
     margin:15px 0;
     padding: 10px;
     background-color: var(--news-panel-color);
     border-radius: 10px;
     display:flex;
     flex-direction: row;
-    max-height: 400px;
+    height: max-content;
+    h4{
+        color:#282966;
+        padding: 0;
+        margin:8px 5px 5px 0px;
+        display: inline-block;
 
+    }
     a{
         text-decoration: none;
     }
@@ -302,26 +326,24 @@ h3{
     .content{
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        
        
     }
     #news_color{
         background-color:var(--news-sentiment-color);
-        width: 15px;
+        width: 6px;
+        min-width: 5px;
         margin:5px 10px;
+        height:auto;
     }
-    .headline h4{
-        color:#282966;
-        padding: 0;
-        margin:8px 5px 5px 0px;
-        display: inline-block;
-
-    }
-    .content{
+    
+    .subContent{
         p{
             text-align: left;
             color:#424242;
             flex:1;
-            /* padding:5px 0; */
+            height:fit-content;
         }
     }
     .sentiment{
@@ -363,22 +385,26 @@ h3{
     position: relative;
     margin:0 10px;
 }
+.timeline ul{
+    padding-left: 0;
+}
 .timeline ul li .content {
-    max-width: 90%;
-    height:100px;
-    padding: 0 10px;
+    max-width: 100%;
+    height:50px;
+    padding: 0 5px;
 }
 
 .timeline ul li{
-    width: 50%;
+    width: 100%;
     padding: 0 20px;
     font-weight: normal;
+    height:fit-content;
 }
 .timeline ul li .content h3 {
     padding: 8px 15px;
     font-size: .8rem;
     background-color: #c6a4ed;
-    margin-bottom: 0;
+    margin: 0;
     text-align: center;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -386,7 +412,7 @@ h3{
 .timeline ul li .content p {
     font-size: .8rem;
     color:#424242;
-    padding: 10px 20px;
+    padding: 2px 10px 18px 10px;;
     background-color: #e1d9ec;
     margin-top: 0;
     text-align: center;
@@ -395,14 +421,15 @@ h3{
     display:flex;
     flex-direction: column;
     flex:1;
+
     
 }
 .timeline::before {
     content: "";
     position: absolute;
-    height: 118%;
+    height: 125%;
     width: 3px;
-    left: 79px;
+    left: 39px;
     background-color: #333333;
 }
 
@@ -413,6 +440,7 @@ table{
     overflow: hidden;
     border-radius:10px;
     border-collapse: collapse;
+    width:80%;
 }
 table tr th{
     background-color: #be9fe1;
@@ -526,15 +554,17 @@ tbody tr:hover td{
         letter-spacing: .5rem;
         font-weight: 800;      
     }
-    hr{
-        height: 1px;
-        width:300px;
-        background: #752460;
-        margin: 15px auto;
-        box-shadow: none;
-        border:none;
-        
-    }
+   
+}
+
+hr{
+    height: 1px;
+    width:300px;
+    background: #752460;
+    margin: 15px auto;
+    box-shadow: none;
+    border:none;
+    
 }
 
 
@@ -568,3 +598,192 @@ tbody tr:hover td{
 
     
 }
+
+
+
+/* IPO PAGE CSS */
+.ipo_dash{
+    margin:20px 0;
+    padding:20px;
+    background-color: #f4ebee;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: inset;
+   
+    .subBlock{
+        margin:5px;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    #investor_share{
+        padding:30px inherit;
+        width:35%;
+        h4{
+            margin-top:40px;
+            font-size: 1.2rem;
+            color:#ec786d;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        #pie_chart{
+            width:auto;
+            height:auto;
+            margin-bottom: 30px;
+        }
+        .bar{
+            width:80%;
+            margin-bottom: 30px;
+        }
+    }
+    #details{
+        h3{
+            border: none;
+        }
+        width:40%;
+    }
+
+}
+
+.analytics{
+    --c:  #ec786d;
+    /* display: none; */
+    hr{
+        width:100%;
+    }
+    .about{
+        p{
+            text-align: left;
+            flex:1;
+        }
+    }
+    a{
+        margin:10px;
+        font-size: .8rem;
+    }
+}
+.ipo{
+    background-color: #bab7be;
+    padding:20px;
+    border-radius: 10px;
+}
+
+
+.fundamental{
+    display: flex;
+    justify-content: space-between;
+    .balence_sheet{
+        width:57%;
+    }
+    .subscription{
+        width:38%
+    }
+    
+}
+
+
+.chatbox{
+    padding:20px 15px;
+    background-color: #d5d7d5;
+    border-radius: 10px;
+    margin: 10px;
+    
+}
+.response_box{
+
+    width:100%;
+    height:400px;
+    display:flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin: 20px 0;
+}
+
+.user_response, .bot_response{
+    display: flex;
+    width:fit-content;
+    align-items:flex-end;
+    max-width:80%;
+    padding:0;
+    height:fit-content;
+    padding: 10px 0;
+    img{
+        border-radius: 100%;
+        width:30px;
+        height:30px;
+        margin:5px;
+    }
+    .text{
+        height:fit-content;
+        background-color: #eeeeee;
+        border-radius: 10px;
+    }
+    p{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: .8rem;
+        padding: 10px 20px;
+        color: #424242;
+        margin:0;
+        text-align: left;
+        height: auto;
+    }
+}
+
+.bot_response{
+    align-self: flex-end;
+    .text{
+        background-color: #c6a4ed;
+    }
+}
+.post_box{
+    display:flex;
+    padding: 0 0 0 35px;
+    textarea{
+        height:fit-content;
+        max-height: 3rem;
+        font-size: 0.7rem;
+        width:100%- 35px;
+    }
+    button{
+        margin-left:10px ;
+        border-radius: 100%;
+        padding: 5px;
+        img{
+            position:relative;
+            height:15px;
+            width:15px;
+            margin:0;
+        }
+    }
+
+}
+
+.response_box::-webkit-scrollbar {
+    width: 5px; 
+  }
+  
+  /* Track */
+  .response_box::-webkit-scrollbar-track {
+    background: #d5d7d5; /* Color of the track */
+    border-radius: 5px;
+  }
+  
+  /* Handle */
+  .response_box::-webkit-scrollbar-thumb {
+    background: #d5d7d5; 
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  .response_box::-webkit-scrollbar-thumb:hover {
+    background:#be9fe1; /* Color of the handle on hover */
+  }
+
+  .response_box::-webkit-scrollbar-track:hover {
+    background:#cfc8d6; /* Color of the handle on hover */
+  }
+
+  
+/* Temporary template CSS */

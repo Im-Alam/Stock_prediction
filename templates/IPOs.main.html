@@ -5,33 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPO Analysis</title>
     <link rel="stylesheet" href="../static/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="module" src="../static/plotCharts.js"></script>
 
 </head>
 <body>
+    {%include 'navbar.html'%}
 
+    <div class="comarison_with_best">
+        <div id="comparison_radar" class="radar_chart"></div>
+    </div>
+    
     <div class="ipo">
         <div class="ipo_dash">
-            <div class="timeline">
+            <div class ="subBlock" id="timeline_ipo">
                 {%include 'timeline.ipo.html'%}
             </div>
-            <div class="investor_share">
+            <div class ="subBlock" id="investor_share">
                 <h4>Investor share</h4>
                 <div id="pie_chart"></div>
                 {%include 'ratio_bar.html'%}
             </div>
-            <div class="details">
+            <div class ="subBlock" id="details">
                 <h3>Company  Name</h3>
                 {%include 'table.ipo.html'%}
                 <button>expand</button>
             </div>
         </div>
 
+        <div class="analytics">
+            <div class="text_class" style="padding: auto 40px;">
+                <div class="content">
+                    <div class="headline">
+                        <h4>About</h4>
+                    </div>
+                    <div class="subContent">
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, debitis autem! Est hic quaerat nobis dolores maxime? Magnam omnis cum illo odio nulla in harum doloribus ipsa iste id, veritatis consectetur accusantium cumque dolorum possimus praesentium molestias sunt, sit unde consequuntur ab quod? Voluptatibus iste eius dolorem sint eos maiores, praesentium pariatur quisquam esse porro adipisci id commodi inventore tenetur dolore veniam molestias possimus sit quidem quia. Nisi doloremque soluta molestias velit, fuga ullam, alias aspernatur veniam eligendi, accusantium suscipit.
+                        </p>
+                    </div>                   
+                </div>
 
-        <div class="analysis">
+                <div class="content">
+                    <div class="headline">
+                        <h4>Purpose of IPO</h4>
+                    </div>
+                    <div class="subContent">
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo, debitis autem! Est hic quaerat nobis dolores maxime? Magnam omnis cum illo odio nulla in harum doloribus ipsa iste id, veritatis consectetur accusantium cumque dolorum possimus praesentium molestias sunt, sit unde consequuntur ab quod? Voluptatibus iste eius dolorem sint eos maiores, praesentium pariatur quisquam esse porro adipisci id commodi inventore tenetur dolore veniam molestias possimus sit quidem quia. Nisi doloremque soluta molestias velit, fuga ullam, alias aspernatur veniam eligendi, accusantium suscipit.
+                        </p>
+                    </div>                   
+                </div>
+            </div>
 
+            <div class="fundamental">
+                <table class = "balence_sheet">
+                    
+                    <tr>
+                        <th>
+                            <p>Value</p>
+                        </th>
+                        <th>
+                            <p>month1</p>
+                        </th>
+                        <th>
+                            <p>month2</p>
+                        </th>
+                        <th>
+                            <p>month3</p>
+                        </th>
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <td><p>Revenue</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                            <td><p>67</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>Revenue</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                            <td><p>67</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>Revenue</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                            <td><p>67</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>Revenue</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                            <td><p>67</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>Revenue</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                            <td><p>67</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class = "subscription">
+                    
+                    <tr>
+                        <th>
+                            <p>Investor category</p>
+                        </th>
+                        <th>
+                            <p>Day1</p>
+                        </th>
+                        <th>
+                            <p>Day2</p>
+                        </th>
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <td><p>FII</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>DII</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+
+                        </tr>
+                        <tr>
+                            <td><p>Reatail</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+
+                        </tr>
+                        <tr>
+                            <td><p>MF</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                        </tr>
+                        <tr>
+                            <td><p>Angel</p></td>
+                            <td><p>45</p></td>
+                            <td><p>41</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="feedback">
+
+            </div>
+            <hr>
+            <div class="prospectus">
+                <a href="DRHP" download="{{"company name"}}">DRHP</a>
+                <a href="RHP" download="{{"company name"}}">RHP</a>
+            </div>
         </div>
     </div>
-
-    <script src="ipo_page.js"></script>
+    {%include 'chatbox.html'%}
+    {%include 'footer.html'%}
+    <!-- <script src="ipo_page.js"></script> -->
 </body>
 </html>
