@@ -96,7 +96,7 @@ analyse.addEventListener('click', (event) => {
         return;
     }
     const file = fileInput.files[0];
-    const url = `/analysis/${encodeURIComponent(file.name)}`;
+    const url = '/IPO_page'//`/analysis/${encodeURIComponent(file.name)}`;
     window.location.href = url;
 
 

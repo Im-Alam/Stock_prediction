@@ -55,12 +55,17 @@ def upload_file():
 
 
 
-@app.route('/analysis/<fileName>', methods = ['GET'])
+@app.route( '/analysis/<fileName>', methods = ['GET'])
 def analyse(fileName):
     #print(fileName)
 
-    return render_template('analysis.html', data = {'fileName': fileName})
+    return render_template('analysis.main.html', data = {'fileName': fileName})
 
+
+
+@app.route('/IPO_page')
+def ipo_page():
+    return render_template('IPOs.main.html')
 
 
 PORT_NO = int(os.getenv('PORT', 5000))#Default to 5000 if PORT not found

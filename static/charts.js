@@ -51,7 +51,7 @@ const plotCandlestickChart = function(id_, data, layout_= {}) {
 }
  
 //Radar chart
-const plotRadarChart = function(id_, data_, layout_ = {}, name_){
+const plotRadarChart = function(id_, data_, layout_ = {}, name_= "radar", line = true){
   /*
   [
     {
@@ -66,7 +66,10 @@ const plotRadarChart = function(id_, data_, layout_ = {}, name_){
     data_[i].type = 'scatterpolar'
     data_[i].fill = 'toself'
     data_[i].name = name_[i]
-    data_[i].line = {shape:'spline'}
+    if(line === true){
+      data_[i].line = {shape:'spline'}
+    }
+    else{data_[i].line = {shape:'dot'}}
   }
 
   const layout = {
@@ -78,60 +81,64 @@ const plotRadarChart = function(id_, data_, layout_ = {}, name_){
     },
     showlegend: false,
     paper_bgcolor: 'transparent',
-    margin: {l:20, r:20, t:30, b:20}
+    margin: {l:20, r:20, t:40, b:20}
   }
   Object.assign(layout, layout_);
+  const config = {
+    displaylogo:false,
+    displayModeBar: false
+  }
 
-  Plotly.newPlot(id_, data_, layout);
+  Plotly.newPlot(id_, data_, layout, config);
 }
 
 //Donut chart
-const plotDonutChart = function(id_, data_, layout_ = {}, name_){
+const plotDonutChart = function(id_, data_, name_,  layout_ = {}){
   /*REQUIRED DATA FORMAT...
   [{
     values: [16, 15, 12, 6, 5, 4, 42],    //Sum up to 100
-    labels: ['US', 'China', 'European Union', 'Russian Federation', 'Brazil', 'India', 'Rest of World' ],
-    domain: {column: 0},
-    
+    labels: ['US', 'China', 'European Union', 'Russian Federation', 'Brazil', 'India', 'Rest of World' ]
   }]
   */
-  for(let i=0; i<data_.length; i++){
-    data_[i].type = 'pie'
-    data_[i].hole = 0.4
-    data_[i].hoverinfo = 'label+percent'
-    data_[i].name = name_
-    data_.domain = {column:0}
+  try {
+    for(let i=0; i<data_.length; i++){
+      data_[i].type = 'pie'
+      data_[i].hole = 0.4
+      data_[i].hoverinfo = 'label+percent'
+      data_[i].name = name_
+      data_[i].domain = {column:0}
+      data_[i].marker = {
+        colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2']
+      };
+    }
+  
+    var layout = {
+      title: 'Set title in layout',
+      paper_bgcolor: 'transparent',
+      margin: {
+        r: 20,
+        t: 40,
+        b: 20,
+        l: 100
+      },
+      height: 400,
+      width: 600,
+      showlegend: false,
+      grid: {rows: 1, columns: 1}
+    };
+  
+    Object.assign(layout, layout_);
+
+    const config = {
+      displaylogo: false,
+      displayModeBar: false
+    }
+    
+    Plotly.newPlot(id_, data_, layout, config)
+
+  } catch (error) {
+    console.log(error)
   }
-
-  var layout = {
-    title: 'Set title in layout',
-    paper_bgcolor: 'transparent',
-    margin: {
-      r: 20,
-      t: 40,
-      b: 20,
-      l: 100
-    },
-    annotations: [
-      {
-        font: {
-          size: 15
-        },
-        showarrow: false,
-        text: 'INDIA',
-        x: 0.19,
-        y: 0.5
-      }    
-    ],
-    height: 400,
-    width: 600,
-    showlegend: false,
-    grid: {rows: 1, columns: 2}
-  };
-
-  Object.assign(layout, layout_);
-
-  Plotly.newPlot(id_, data_, layout)
 
 }
 
@@ -183,8 +190,12 @@ const plotHeatMap = function (id_, data_, layout_ = {}){
   };
 
   Object.assign(layout, layout_);
+  
+  const config = {
+    displaylogo: false
+  }
 
-  Plotly.newPlot(id_, data_, layout);
+  Plotly.newPlot(id_, data_, layout,config);
 
 }
 
