@@ -29,7 +29,12 @@ const radar_data = [
 ];
 const radar_layout = {
     height: 400,
-    width:400
+    showlegend:true,
+    legend: {
+        x:3,
+        y:2,
+        orientation:"h"
+    }
 }
 
 plotRadarChart("comparison_radar",radar_data,radar_layout)

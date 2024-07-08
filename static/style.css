@@ -602,6 +602,9 @@ hr{
 
 
 /* IPO PAGE CSS */
+#comparison_radar{
+    margin:20px 0;
+}
 .ipo_dash{
     margin:20px 0;
     padding:20px;
@@ -724,7 +727,7 @@ hr{
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         font-size: .8rem;
         padding: 10px 20px;
-        color: #424242;
+        color: #7b7878;
         margin:0;
         text-align: left;
         height: auto;
@@ -734,7 +737,7 @@ hr{
 .bot_response{
     align-self: flex-end;
     .text{
-        background-color: #c6a4ed;
+        background-color: #dac7f0;
     }
 }
 .post_box{

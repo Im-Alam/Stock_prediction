@@ -69,7 +69,6 @@ const plotRadarChart = function(id_, data_, layout_ = {}, name_= "radar", line =
     if(line === true){
       data_[i].line = {shape:'spline'}
     }
-    else{data_[i].line = {shape:'dot'}}
   }
 
   const layout = {
