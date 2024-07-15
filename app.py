@@ -5,7 +5,7 @@ from src.config import devConfig
 from sqlalchemy.orm import Session
 from src.db.pgdb_connect import engine
 from src.db_models.model import User
-
+from controllers.userController import login, registerUser
 #Below function runs and load environment variables into os
 load_dotenv(override=True)
 
@@ -15,6 +15,13 @@ app = Flask(__name__)
 # Configure upload folder (adjust as needed)
 app.config.from_object(devConfig)  # Outside static folder
 session = Session(engine)
+
+
+@app.route('/login', methods=['POST'])
+def loginFunc():
+    login()
+
+
 
 
 @app.route('/')

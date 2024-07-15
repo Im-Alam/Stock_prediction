@@ -6,13 +6,14 @@ import os
 import jwt
 from datetime import datetime, timezone
 from src.db.pgdb_connect import engine
+from src.utils.reqRes import apiError, apiResponse
 
 
 session = Session(engine)
 
 class Base(DeclarativeBase):
     def deselect(self, *arg):
-        self.
+        pass
 
 class User(Base):
     __tablename__ = "users"
@@ -34,7 +35,12 @@ class User(Base):
     
     #If user want to remove its account
     def removeUser(self, userID):
-        pass
+        try:
+            user = session.query(User).filter_by(id =userID).first()
+            session.delete(user)
+            session.commit()
+        except:
+            return apiError(500, f"user not exist with id {userID}")
 
     #During logout we remove acess token and refresh toke from database
     def removeAcessAndRefreshTokens(self):
@@ -43,9 +49,13 @@ class User(Base):
     #Find user by id
     def findUserById(self, userId:int):
         #It will return 'None' if no user found. 
-        user = session.query(User).filter_by(id = userId).first() #first if in case more entries are present
+        user = session.query(User).filter_by(id = userId).first() 
         return user
 
+    def findUserByUsename(self, inp_username:str):
+        #It will return 'None' if no user found. 
+        user = session.query(User).filter_by(username = inp_username).first() 
+        return user
 
     #If user want to update its information
     def updateUser(self, ):
@@ -57,9 +67,13 @@ class User(Base):
 
     #hash the password before saving or updating
     def hashPassword(self, password):
-        salt = bcrypt.gensalt(rounds=12)
-        self.password = bcrypt.hashpw(password, salt)
-
+        try:
+            salt = bcrypt.gensalt(rounds=12)
+            self.password = bcrypt.hashpw(password, salt)
+            return apiResponse(200, 'Password hashed sucessfully')
+        except Exception as e:
+            return apiError(409, "Error occured while password hashing \n",e)
+        
     def isCorrectPassword(self, password):
         return bcrypt.checkpw(password.encode(), self.password)
     
@@ -69,7 +83,7 @@ class User(Base):
                 "id" : self.id,
                 "username" : self.username,
                 "email" : self.email,
-                "exp": datetime.datetime.now() + datetime.timedelta(minutes=os.getenv('REFRESH_TOKEN_EXPIRY'))
+                "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=os.getenv('REFRESH_TOKEN_EXPIRY'))
             },
             os.getenv('ACESS_TOKEN_SECRET'),
             algorithm = 'HS256'
@@ -79,7 +93,7 @@ class User(Base):
         return jwt.encode(
             {
                 "id" : self.id,
-                "exp": datetime.datetime.now() + datetime.timedelta(days=os.getenv('REFRESH_TOKEN_EXPIRY'))
+                "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=os.getenv('REFRESH_TOKEN_EXPIRY'))
             },
             os.getenv('REFRESH_TOKEN_SECRET'),
             algorithm = 'HS256'
