@@ -1,15 +1,21 @@
-from flask import Flask, request, render_template, jsonify
-import os  # for os.path functions
+from flask import Flask, request, render_template
+import os  
 from dotenv import load_dotenv
+from src.config import devConfig
+from sqlalchemy.orm import Session
+from src.db.pgdb_connect import engine
+from src.db_models.model import User
 
 #Below function runs and load environment variables into os
-load_dotenv()
+load_dotenv(override=True)
 
 #Creation of app
 app = Flask(__name__)
 
 # Configure upload folder (adjust as needed)
-app.config['UPLOAD_FOLDER'] = 'uploads'  # Outside static folder
+app.config.from_object(devConfig)  # Outside static folder
+session = Session(engine)
+
 
 @app.route('/')
 def index():
@@ -18,13 +24,19 @@ def index():
     #get data about different other things
     #pack all the data into json format and sent to index.html
     #at index.html, frontend will seperate the data using js and do the neccesary.
-    sample_data = {
+    try:
+        user = session.query(User).all()
+    except:
+        pass
+
+
+    sample_data = [{
     'dates': ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05'],
     'open': [100, 105, 102, 108, 107],
     'high': [110, 107, 105, 112, 109],
     'low': [95, 100, 101, 105, 104],
     'close': [105, 102, 108, 107, 106]
-    }
+    }, user]
     return render_template('index.html', data=sample_data)
 
 
@@ -69,5 +81,7 @@ def ipo_page():
 
 
 PORT_NO = int(os.getenv('PORT', 5000))#Default to 5000 if PORT not found
+HOST = os.getenv('HOST', "127.0.0.1")
+
 if __name__ == '__main__':
-    app.run(port = PORT_NO, debug=True)
+    app.run(port = PORT_NO, host=HOST, debug=True)
