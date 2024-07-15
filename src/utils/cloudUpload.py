@@ -2,7 +2,6 @@ import cloudinary
 import cloudinary.uploader
 import os
 from dotenv import load_dotenv
-import fs
 
 load_dotenv()
 
@@ -17,7 +16,7 @@ cloudinary.config(
 #Uploading a file on cloudinary
 def uploadOnCloud(localPath:str, public_id = None):
     try:
-        upload_result = cloudinary.uploader.upload(localPath, public_id = public_id, : 'auto')
+        upload_result = cloudinary.uploader.upload(localPath, public_id = public_id)
         #now unlink file from local folder
         return upload_result
     except Exception as e:

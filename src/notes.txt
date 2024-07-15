@@ -1,0 +1,16 @@
+Focus:
+
+    python-dotenv: Primarily focuses on reading configuration settings from a .env
+
+    file. It's a simple and lightweight library for loading environment variables into your Python script's namespace.
+    python-decouple: Offers broader functionalities like environment variable access, configuration files (including .env and .ini), default values, type casting, and support for various frameworks like Django and Flask.
+
+Syntax:
+
+    python-dotenv: Accesses environment variables using the built-in os.environ dictionary after loading the .env file.
+    python-decouple: Provides a more convenient syntax like config('VARIABLE_NAME') to directly access configuration settings.
+
+Structure:
+
+    python-dotenv: Requires explicit loading of the .env file using load_dotenv() before accessing variables.
+    python-decouple: Offers flexibility in loading configuration. You can access variables directly without explicitly loading a file, as it checks environment variables by default. However, you can also configure it to read from .env or .ini files.
