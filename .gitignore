@@ -5,3 +5,5 @@ test.ipynb
 uploads
 .env
 charts.html
+*.pyc
+
