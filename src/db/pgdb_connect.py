@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+
 
 def connectPGDB():
     try:
@@ -12,4 +12,3 @@ def connectPGDB():
         return 400
 
 engine = connectPGDB()
-session = Session(engine)

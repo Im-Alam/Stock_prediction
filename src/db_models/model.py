@@ -1,19 +1,22 @@
 from typing import List, Optional
-from sqlalchemy import String, Integer, BIGINT, Enum, ForeignKey, DateTime, func, text
+from sqlalchemy import String, Integer, BIGINT, Enum, ForeignKey, DateTime, func, text, or_
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
 import bcrypt
 import os
 import jwt
-from datetime import datetime, timezone
+from datetime import datetime, timedelta
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
 
-session = Session(engine)
-
 class Base(DeclarativeBase):
-    def deselect(self, *arg):
-        pass
+    def deselect(self, *args: str):
+        outKey = set(self.__dict__.keys()) - set(args) - {'_sa_instance_state'}
+        user = {}
+        for key in outKey:
+            user[key] = getattr(self, key)
+
+        return user
 
 class User(Base):
     __tablename__ = "users"
@@ -31,72 +34,103 @@ class User(Base):
 
     #__init__ method is derived from Base
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, name={self.name!r}, fullname={self.fullname!r})"
+        return f"User(id={self.id!r}, name={self.username!r}, fullname={self.fullname!r})"
     
     #If user want to remove its account
     def removeUser(self, userID):
+        session = Session(engine)
         try:
-            user = session.query(User).filter_by(id =userID).first()
+            user = session.query(User).filter_by(id = userID).first()
             session.delete(user)
             session.commit()
         except:
-            return apiError(500, f"user not exist with id {userID}")
-
-    #During logout we remove acess token and refresh toke from database
-    def removeAcessAndRefreshTokens(self):
-        pass
+            session.rollback()
+            return apiError(500, f"No user exist with id {userID}")
+        finally:
+            session.close()
 
     #Find user by id
+    @classmethod
     def findUserById(self, userId:int):
-        #It will return 'None' if no user found. 
-        user = session.query(User).filter_by(id = userId).first() 
-        return user
+        session = Session(engine)
+        try:
+            #It will return 'None' if no user found. 
+            user = session.query(User).filter(User.id == userId).first()
+            return user
+        except Exception as e:
+            session.rollback()
+            return apiError(500, f'{e}')
+        finally:
+            session.close()
 
+    @classmethod
     def findUserByUsename(self, inp_username:str):
-        #It will return 'None' if no user found. 
-        user = session.query(User).filter_by(username = inp_username).first() 
-        return user
+        session = Session(engine)
+        try:
+            #It will return 'None' if no user found. 
+            user = session.query(User).filter_by(username = inp_username).first()
+            return user
+        except Exception as e:
+            session.rollback()
+            return apiError(500, f'{e}')
+        finally:
+            session.close()
+
+    @classmethod
+    def findUser_OR(self, username_, email_):
+        session = Session(engine)
+        try:
+            user = session.query(User).filter(or_(self.username == username_, self.email == email_)).first()
+            return user
+        except Exception as e:
+            session.rollback()
+            return apiError(400, f'Error occured while fething user detail. Error: {e}')
+        finally:
+            session.close()
 
     #If user want to update its information
-    def updateUser(self, ):
-        pass
-
+    def updatePassword(self, password):
+        session = Session(engine)
+        try:
+            self.password = password
+            session.add(self)
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            return apiError(400, 'Something went wrong while updating password')
+        finally:
+            session.close()
+ 
     #Check if password has been modified to update password
     def isPasswordModified(self, password):
         return bool(1 ^ self.isCorrectPassword(password))
 
-    #hash the password before saving or updating
-    def hashPassword(self, password):
+    def isCorrectPassword(self, password_:str):
         try:
-            salt = bcrypt.gensalt(rounds=12)
-            self.password = bcrypt.hashpw(password, salt)
-            return apiResponse(200, 'Password hashed sucessfully')
-        except Exception as e:
-            return apiError(409, "Error occured while password hashing \n",e)
-        
-    def isCorrectPassword(self, password):
-        return bcrypt.checkpw(password.encode(), self.password)
+            return bcrypt.checkpw(password_.encode(), self.password.encode())
+        except:
+            return apiError(500, 'Saved password is not byte type')
     
     def generateAcessToken(self):
-        return jwt.encode(
-            {
-                "id" : self.id,
-                "username" : self.username,
-                "email" : self.email,
-                "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=os.getenv('REFRESH_TOKEN_EXPIRY'))
-            },
-            os.getenv('ACESS_TOKEN_SECRET'),
-            algorithm = 'HS256'
-        )
+            payload = {
+                'user_id': self.id,  # Example user ID
+                'username': self.username,
+                'fullname': self.fullname,
+                'exp': datetime.now() + timedelta(minutes=(int(os.getenv('ACCESS_TOKEN_EXPIRY'))))
+            }
+            token =  jwt.encode(payload, os.getenv('ACCESS_TOKEN_SECRET'), algorithm='HS256')
+            return token
 
-    def generrateRefreshToken(self):
-        return jwt.encode(
-            {
+    def generateRefreshToken(self):
+        payload ={
                 "id" : self.id,
-                "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=os.getenv('REFRESH_TOKEN_EXPIRY'))
-            },
-            os.getenv('REFRESH_TOKEN_SECRET'),
-            algorithm = 'HS256'
-        )
+                "exp": datetime.now() + timedelta(days=int(os.getenv('REFRESH_TOKEN_EXPIRY')))
+                }
+        token = jwt.encode(payload, os.getenv('REFRESH_TOKEN_SECRET'), algorithm = 'HS256')
+        return token
+
         
 
+
+
+Base.metadata.create_all(engine)
