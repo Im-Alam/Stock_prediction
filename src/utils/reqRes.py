@@ -1,13 +1,13 @@
-from flask import Response, Request
+from flask import jsonify
 
-#Making subclass of api response
-class apiResponse(Response):
-    def __init__(self, statusCode:int, message:str):
-        self.status = statusCode
-        self.message = message
-      
-class apiError():
-    def __init__(self, statusCode, message):
-        self.status = statusCode
-        self.message = message
+def apiResponse(status, message, data_=None):
+    response = jsonify({"status": status, "message": message})
+    response.status_code = status
+    if data_ != None: 
+        response['data'] = data_
+    return response
 
+def apiError(status, message):
+    response = jsonify({"error": message, "status": status})
+    response.status_code = status
+    return response
