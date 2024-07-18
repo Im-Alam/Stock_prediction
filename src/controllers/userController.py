@@ -1,15 +1,19 @@
-from db_models.model import User
-from db.pgdb_connect import session
+from src.db_models.model import User
+from src.db.pgdb_connect import engine
 from sqlalchemy.orm import Session
 import jwt
-from utils.reqRes import apiError, apiResponse
-from flask import Flask, request, make_response, jsonify
+from src.utils.reqRes import apiError, apiResponse
+from flask import Flask, request, make_response, jsonify, g
 import os
-
+from src.utils.hashPW import hashPassword
+from src.utils.auth import login_required
 
 def generateAccessAndRefreshtoken(userId:int):
     try:
+        session = Session(engine)
+
         user = User.findUserById(userId)
+
         if(user != None):
             accessToken = user.generateAcessToken()
             refreshToken = user.generateRefreshToken()
@@ -17,10 +21,12 @@ def generateAccessAndRefreshtoken(userId:int):
             user.access_token = accessToken
             user.refresh_token = refreshToken
 
+            session.add(user)
             session.commit()
+            print('ACCESS token updated')
             return (accessToken, refreshToken)
         else:
-            print(f"User wit userId {userId} not found!")
+            print(f"User with userId {userId} not found!")
 
     except Exception as e:
         print(e)
@@ -30,34 +36,39 @@ def generateAccessAndRefreshtoken(userId:int):
         session.close()
 
 
-def registerUser(registrationData:dict):
+def registerUser():
 
-    #get registrationData as object in to function
+    username_ = request.form.get('username')
+    password_ = request.form.get('password')
+    email_ = request.form.get('email')
+    fullname_ = request.form.get('fullname')
 
-    check_format_for = {'username', 'password', 'email'}
-    #step 1: check if all fields are filled
-    missingKeys = check_format_for - registrationData.keys()
-
-    if(len(missingKeys)!=0):
+    if not (username_ and password_ and fullname_ and email_):
         return apiError(400, 'All fields required')
     
-    username_, password_, email_, fullname_ = registrationData.username, registrationData.password, registrationData.email, registrationData.fullname
+    session = Session(engine)
+
     try:
         #Now check if user already exist
-        user = session.query(User).filter(User.username == username_, User.email == email_).first()
+        user = User.findUser_OR(username_, email_)
         if(user):
-            return apiError(409, 'User:{username_} already exist',format({username_}))
+            return apiError(401, f'username or email already taken')
         
         user = User(
             username = username_,
-            password = password_,
+            password = hashPassword(password_),
             fullname = fullname_,
             email = email_
         )
+
+        session.add(user)
         session.commit()
+       
+        return apiResponse(200, 'User registered')
 
     except Exception as e:
-        return apiError(409, f'{e}')
+        session.rollback()
+        return apiError(400, f'{e}')
     finally:
         session.close()
 
@@ -66,63 +77,124 @@ def registerUser(registrationData:dict):
 In flask we can make user login by setting token with user id in session
 while logout we will pop all the user related data from session
 
-
 Other way is from cookie
 
 """
+
 def login():
-    username_ = request.form.get('username')
-    password_ = request.form.get('password')
+    try:
+        username_ = request.form.get('username')
+        password_ = request.form.get('password')
+        #print(username_, password_)
 
-    if(not username_ or not password_):
-       return apiError(400, 'Both fields required')
+        if(not username_ or not password_):
+            return apiError(400, 'Both fields required')
     
-    user = User.findUserByUsename(username_)
+        user = User.findUserByUsename(username_)
+        
+        if(not user):
+            return apiError(404, 'User Does not exist')
+        
+        passwordIsCorrect = user.isCorrectPassword(password_)
 
-    if(not user):
-        return apiError(404, 'User Does not exist')
-    
-    passwordIsCorrect = user.isCorrectPassword(password_)
+        if(not passwordIsCorrect):
+            return apiError(401, 'Invalid user credential')
+        
+        accessToken, refreshToken = generateAccessAndRefreshtoken(user.id)
 
-    if(not passwordIsCorrect):
-        return apiError(401, 'Invalid user credential')
-    
-    accessToken, refreshToken = generateAccessAndRefreshtoken(user.id)
+        userData = user.deselect('password', 'password', 'created_at', 'refresh_token')
+        
+        response = jsonify(
+            {
+                "status" :200,
+                "user":userData,
+                "message":f'{username_} logged in successfully'
+            })
+        response.status_code = 200
+        #Other option to set cookie: domain:str, expires:datetime, path:str. 
+        response.set_cookie('accessToken', accessToken, httponly=True, secure=False,)
+        #response.set_cookie('refreshToken', refreshToken, httponly=True, secure=False)
 
-    userData = user.deselect('password', 'password', 'created_at')
+        return response
 
-    response = make_response(jsonify(
-        status=200,
-        user=userData,
-        accessToken=accessToken,
-        refreshToken=refreshToken,
-        message='User logged in successfully'
-    ), 200)
-
-    response.set_cookie('accessToken', accessToken, httponly=True, secure=True)
-    response.set_cookie('refreshToken', refreshToken, httponly=True, secure=True)
+    except Exception as e:
+        return apiError(500, f'{e}')
      
-    return response
-
-
+    
 
 def logout():
-    pass
+    try:
+        try:
+            token = request.cookies.get('accessToken')
+        except:
+            token = request.headers.get('accessToken')
+        
+        if not token:
+            return apiError(400, 'User doesn\'t exist') 
+        
+        try:
+            decodedToken = jwt.decode(token, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=['HS256'])
+        except Exception as e:
+            return apiError(401, f'{e}\nUser session expired or Invalid token')
+
+        user = User.findUserById(decodedToken['user_id'])
+        if(not user):
+            return apiError(401, 'Invalid access Token')
+        
+        session = Session(engine)
+        try:
+            user.access_token = None
+            user.refresh_token = None
+            print("executing here")
+            session.add(user)
+            session.commit()
+        except:
+            session.rollback()
+            return apiError(400, 'Error occured while logging out')
+        finally:
+            session.close()
+        
+        
+        response = jsonify({'message': 'User logged out'})
+        response.status_code = 200
+        response.delete_cookie('accessToken',httponly=True, secure=False)
+        g.user = None  # Clear user data from global context
+        
+        return response
+    except:
+        return jsonify({'message': 'No user logged in'}), 400
+        
 
 
-apiResponse.set_cookie()
-Response.delete_cookie('cookie_name', 'cookie2_name',httponly=False, ).json({
-    "name" : "Imran",
-    "email": "imran@jmail.com"
-})
+def updatePassword():
+    try:
+        active_cookie = request.cookies.get('accessToken')
+
+        if not active_cookie:
+            return apiError(400, 'User is not logged in')
+        
+        try:
+            decodedCookie = jwt.decode(active_cookie, os.getenv('ACCESS_TOKEN_SECRET'), algorithms=['HS256'])
+        except:
+            return apiError(400, 'Invalid access token')
+        
+        
+        old_password = request.form.get('old_password')
+        new_password = request.form.get('new_password')
+        
+        if not (old_password and new_password):
+            return apiError(401, 'Both fields are required')
+
+        user = User.findUserById(decodedCookie['user_id'])
+
+        if not user.isCorrectPassword(old_password):
+            return apiError(400,'Old password is incorrect')
+        
+        user.updatePassword(hashPassword(new_password))
+
+        return apiResponse(200, 'Password updated')
+
+    except Exception as e:
+        return apiError(400, f'{e} AND Error occured while updating password')
 
 
-
-
-def logout():
-    accessToken = request.cookies.get('accessToken')
-    user = jwt.decode(
-        accessToken,
-        os.getenv('ACCESS_TOKEN_SECRET' ),
-        algorithm='HS256'
-    )
