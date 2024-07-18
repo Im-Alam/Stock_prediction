@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, after_this_request,before_render_template
 import os  
 from dotenv import load_dotenv
 from src.config import devConfig
-from sqlalchemy.orm import Session
 from src.db.pgdb_connect import engine
-from src.db_models.model import User
-from controllers.userController import login, registerUser
+from sqlalchemy.orm import Session
+from src.controllers.userController import login, registerUser, logout, updatePassword
+
 #Below function runs and load environment variables into os
 load_dotenv(override=True)
 
@@ -14,15 +14,24 @@ app = Flask(__name__)
 
 # Configure upload folder (adjust as needed)
 app.config.from_object(devConfig)  # Outside static folder
-session = Session(engine)
 
 
 @app.route('/login', methods=['POST'])
 def loginFunc():
-    login()
+    return login()
 
+@app.route('/logout', methods=['POST'])
+def logoutFunc():
+    return logout()
 
+@app.route('/register',  methods=['GET','POST'])
+def register():
+    return registerUser()
 
+@app.route('/updatePw', methods=['POST'])
+def updatePW():
+    return updatePassword()
+    
 
 @app.route('/')
 def index():
@@ -31,20 +40,12 @@ def index():
     #get data about different other things
     #pack all the data into json format and sent to index.html
     #at index.html, frontend will seperate the data using js and do the neccesary.
-    try:
-        user = session.query(User).all()
-    except:
-        pass
+    # try:
+    #     user = session.query(User).all()
+    # except:
+    #     pass
 
-
-    sample_data = [{
-    'dates': ['2024-06-01', '2024-06-02', '2024-06-03', '2024-06-04', '2024-06-05'],
-    'open': [100, 105, 102, 108, 107],
-    'high': [110, 107, 105, 112, 109],
-    'low': [95, 100, 101, 105, 104],
-    'close': [105, 102, 108, 107, 106]
-    }, user]
-    return render_template('index.html', data=sample_data)
+    return render_template('index.html')
 
 
 @app.route('/upload', methods=['POST'])
