@@ -1,7 +1,6 @@
 import os
 from sqlalchemy import create_engine
 
-
 def connectPGDB():
     try:
         engine = create_engine(os.getenv("AIVEN_PG_URI"))
