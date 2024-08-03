@@ -61,6 +61,10 @@ class IndicesTable(Base):
 
 
     def insert_data_bulk(data_list: list):
+        """
+         Parameters:
+        - data_list: List of dictionaries containing the data to be inserted.
+        """
         try:
             session = Session(engine)
             session.bulk_insert_mappings(IndicesTable, data_list)
