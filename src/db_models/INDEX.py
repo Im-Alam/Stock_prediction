@@ -31,3 +31,8 @@ class IndicesTable(Base):
 
     def __repr__(self) -> str:
         return (f"IndicesTable(id={self.id}, timestamp={self.timestamp}")
+    
+    @classmethod
+    def fetch_recent_nData(cls, n):
+        session = Session
+        return session.query(cls).order_by(cls.timestamp.desc()).limit(n).all()

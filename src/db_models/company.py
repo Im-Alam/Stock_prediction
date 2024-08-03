@@ -46,9 +46,10 @@ class Company(Base):
             else:
                 # If the company does not exist, create a new Company object
                 company = Company(
-                    name=company_data["company_name"],
+                    company_name=company_data["company_name"],
                     symbol=company_data.get("symbol"),
-                    sector=company_data.get("sector")
+                    sector=company_data.get("sector"),
+                    mcap = company_data["mcap"]
                 )
                 session.add(company)
             session.commit()
