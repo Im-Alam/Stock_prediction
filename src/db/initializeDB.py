@@ -6,3 +6,5 @@ from src.db.pgdb_connect import engine
 
 def createTables():
     Base.metadata.create_all(engine)
+
+

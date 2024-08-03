@@ -1,6 +1,7 @@
 from typing import List, Optional
 from sqlalchemy import String, Integer, BIGINT, Enum, ForeignKey, DateTime, func, text, or_
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, Session
+from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
+from src.db_models.base import Base
 import bcrypt
 import os
 import jwt
@@ -8,15 +9,6 @@ from datetime import datetime, timedelta
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
-
-class Base(DeclarativeBase):
-    def deselect(self, *args: str):
-        outKey = set(self.__dict__.keys()) - set(args) - {'_sa_instance_state'}
-        user = {}
-        for key in outKey:
-            user[key] = getattr(self, key)
-
-        return user
 
 class User(Base):
     __tablename__ = "users"
@@ -31,6 +23,8 @@ class User(Base):
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     updated_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
+    feedback = relationship("Feedback", back_populates="user", cascade="all, delete-orphan")
+    comment = relationship('Comment', back_populates="user", cascade="all, delete-orphan")
 
     #__init__ method is derived from Base
     def __repr__(self) -> str:
@@ -129,8 +123,3 @@ class User(Base):
         token = jwt.encode(payload, os.getenv('REFRESH_TOKEN_SECRET'), algorithm = 'HS256')
         return token
 
-        
-
-
-
-Base.metadata.create_all(engine)

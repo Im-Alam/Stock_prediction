@@ -2,15 +2,20 @@ from flask import Flask, request, render_template, after_this_request,before_ren
 import os  
 from dotenv import load_dotenv
 from src.config import devConfig
-from src.db.pgdb_connect import engine
-from sqlalchemy.orm import Session
-from src.controllers.userController import login, registerUser, logout, updatePassword
+from src.controllers.userController import *
+from src.db.initializeDB import createTables
+from flask_cors import CORS
+
 
 #Below function runs and load environment variables into os
 load_dotenv(override=True)
+createTables()
+
 
 #Creation of app
 app = Flask(__name__)
+# Allow CORS requests only from 'https://example.com'
+CORS(app, resources={r"/*": {"origins": "http://localhost:5000"}})
 
 # Configure upload folder (adjust as needed)
 app.config.from_object(devConfig)  # Outside static folder
@@ -45,7 +50,7 @@ def index():
     # except:
     #     pass
 
-    return render_template('index.html')
+    return render_template('index.html', data = {})
 
 
 @app.route('/upload', methods=['POST'])

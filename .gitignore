@@ -6,4 +6,4 @@ uploads
 .env
 charts.html
 *.pyc
-
+*.ipynb
