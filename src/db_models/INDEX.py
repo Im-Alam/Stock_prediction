@@ -31,9 +31,11 @@ class IndicesTable(Base):
 
     updated_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
+
     def __repr__(self) -> str:
         return (f"IndicesTable(id={self.id}, timestamp={self.timestamp}")
     
+
     @classmethod
     def fetch_recent_nData(cls, n):
         session = Session(engine)
