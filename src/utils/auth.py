@@ -1,7 +1,7 @@
 import jwt
 import os
 from src.utils.reqRes import apiError;
-from src.db_models.model import User
+from src.db_models.user import User
 from flask import request, g
 from functools import wraps #This used to retain original identity of decorated function
 
@@ -26,7 +26,7 @@ def authorizeUser():
         if(not user):
             return apiError(401, 'Invalid access Token')
         
-        g.user = user
+        #g.user = user
 
         return 'authorized'
 

@@ -1,4 +1,4 @@
-from src.db_models.model import Base
+from src.db_models.base import Base
 from typing import List, Optional
 from sqlalchemy import Integer, Enum, ForeignKey, DateTime, func, or_, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
@@ -36,6 +36,11 @@ class Feedback(Base):
             session.close()
         
 
+class CommentCompanyAssociation(Base):
+    __tablename__ = 'comment_company_association'
+    comment_id: Mapped[int] = mapped_column(ForeignKey('user_comment.id', ondelete='CASCADE'), primary_key=True)
+    company_id: Mapped[int] = mapped_column(ForeignKey('company_table.id', ondelete='CASCADE'), primary_key=True)
+
 
 class Comment(Base):
     __tablename__ = 'user_comment'
@@ -43,12 +48,12 @@ class Comment(Base):
     content : Mapped[str] = mapped_column(Text, nullable=False)
     user_id : Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
     regarding : Mapped[int] = mapped_column(Enum('stock','ipo','index', 'nifty', name='comment_enum'), nullable=True)
-    related_company : Mapped[int] = mapped_column(Integer, ForeignKey('company_table.id'), nullable=True)
     sentiment : Mapped[int] = mapped_column(Integer, nullable = True)
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
     user = relationship('User', back_populates='comment')
-    company = relationship("Company", back_populates="comment")
+    companies = relationship('Company', secondary='comment_company_association', back_populates='comment')
+
 
     def __repr__(self) -> str:
         #In your __repr__ method, using !r ensures that the output includes quotes around strings 

@@ -7,3 +7,4 @@ uploads
 charts.html
 *.pyc
 *.ipynb
+*.db

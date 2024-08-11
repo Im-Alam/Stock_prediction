@@ -1,17 +1,16 @@
-from src.db_models.model import Base
+from src.db_models.base import Base
 from src.db_models.company import Company
 from typing import List, Optional
-from sqlalchemy import Integer, String, ForeignKey, DateTime, func, insert, or_, Text, Numeric, joinedload
+from sqlalchemy import Integer, String, ForeignKey, DateTime, func, insert, or_, Text, Numeric, join
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
 class NewsCompanyAssociation(Base):
     __tablename__ = 'news_company_association'
-    news_id = Mapped[int] = mapped_column(ForeignKey('News.id', ondelete='CASCADE'), primary_key=True)
-    company_id = Mapped[int] = mapped_column(ForeignKey('Company.id', ondelete='CASCADE'), primary_key=True)
-    relevance_score = Mapped[Optional[Numeric]]
-    sentiment_score = Mapped[Optional[Numeric]]
+    news_id : Mapped[int] = mapped_column(ForeignKey('news_table.id', ondelete='CASCADE'), primary_key=True)
+    company_id : Mapped[int] = mapped_column(ForeignKey('company_table.id', ondelete='CASCADE'), primary_key=True)
+    relevance_score : Mapped[Optional[float]] = mapped_column(Numeric)
     
 
 class News(Base):
@@ -145,7 +144,7 @@ class News(Base):
         """
         try:
             session = Session(engine)
-            recent_news = session.query(News).options(joinedload(News.companies)).order_by(News.id.desc()).limit(limit).all()
+            recent_news = session.query(News).options(join(News.companies)).order_by(News.id.desc()).limit(limit).all()
             return recent_news
         except Exception as e:
             session.rollback()

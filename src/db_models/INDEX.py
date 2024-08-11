@@ -1,6 +1,6 @@
-from src.db_models.model import Base
+from src.db_models.base import Base
 from typing import List, Optional
-from sqlalchemy import Integer, Float, DateTime, func, or_
+from sqlalchemy import insert, Integer, Float, DateTime, func, or_
 from sqlalchemy.orm import Mapped, mapped_column, Session
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
@@ -9,11 +9,11 @@ from src.utils.reqRes import apiError, apiResponse
 
 class IndicesTable(Base):
     __tablename__ = 'Indices_table'
-    #collects data of trading day closing price
 
-    timestamp: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
+    timestamp: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), primary_key=True)
     niftyPrediction: Mapped[float] = mapped_column(Float, nullable=True)  # NSE NIFTY 50 (India)
-    predictionAccuracy: Mapped[float] = mapped_column(Float, nullable=True)  # NSE NIFTY 50 (India)
+    predictionAccuracy: Mapped[float] = mapped_column(Float, nullable=True)  # NSE NIFTY 50 (India) update it with market close at 3:30
+
     nifty50: Mapped[float] = mapped_column(Float, nullable=False)  # NSE NIFTY 50 (India)
     sensex: Mapped[float] = mapped_column(Float, nullable=False)  # BSE SENSEX (India)  
     bank_nifty: Mapped[float] = mapped_column(Float, nullable=False)  # Bank Nifty (India)
@@ -33,7 +33,7 @@ class IndicesTable(Base):
 
 
     def __repr__(self) -> str:
-        return (f"IndicesTable(id={self.id}, timestamp={self.timestamp}")
+        return (f"Indices_table(id={self.timestamp})")
     
 
     @classmethod
@@ -56,20 +56,20 @@ class IndicesTable(Base):
             session.commit()
         except Exception as e:
             session.rollback()
-            return apiError(400, f"Error occured while inserting index data:{e}")
+            return apiError(400, f"Error occured while inserting indivisual index data:{e}")
         finally:
             session.close()
 
 
-
-    def insert_data_bulk(data_list: list):
+    @classmethod
+    def insert_data_bulk(cls, data_list: list):
         """
          Parameters:
         - data_list: List of dictionaries containing the data to be inserted.
         """
         try:
             session = Session(engine)
-            session.bulk_insert_mappings(IndicesTable, data_list)
+            session.execute(insert(cls), data_list)
             session.commit()
         except Exception as e:
             session.rollback()

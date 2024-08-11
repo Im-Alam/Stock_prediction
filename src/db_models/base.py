@@ -3,8 +3,8 @@ from sqlalchemy.orm import DeclarativeBase
 class Base(DeclarativeBase):
     def deselect(self, *args: str):
         outKey = set(self.__dict__.keys()) - set(args) - {'_sa_instance_state'}
-        user = {}
+        data = {}
         for key in outKey:
-            user[key] = getattr(self, key)
+            data[key] = getattr(self, key)
 
-        return user
+        return data

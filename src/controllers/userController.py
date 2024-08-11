@@ -1,4 +1,4 @@
-from src.db_models.model import User
+from src.db_models.user import User
 from src.db.pgdb_connect import engine
 from sqlalchemy.orm import Session
 import jwt

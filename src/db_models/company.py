@@ -1,4 +1,4 @@
-from src.db_models.model import Base
+from src.db_models.base import Base
 from typing import List, Optional
 from sqlalchemy import Integer, Enum, BIGINT, String, ForeignKey, DateTime, func, or_, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
@@ -17,6 +17,7 @@ class Company(Base):
     updated_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     comment = relationship('Comment', back_populates='user', cascade="all, delete-orphan")
+    
     event = relationship('Event', back_populates='company', cascade='all, delete-orphan')
     news = relationship('News', secondary='news_company_association', back_populates='companies', cascade='all, delete-orphan')
 
