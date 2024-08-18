@@ -27,9 +27,9 @@ class Ipo(Base):
     anchor_investor_url: Mapped[str]
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     
-    investor: Mapped[List['Investor']] = relationship(back_populates='ipo', cascade='all, delete')
+    investors: Mapped[List['Investor']] = relationship(back_populates='ipo', cascade='all, delete')
     lot: Mapped[List['Lot']] = relationship(back_populates='ipo', cascade='all, delete')
-    registrar: Mapped[List['Registrar']] = relationship(back_populates='ipo', cascade='all, delete')
+    registrar: Mapped[List['Registrar']] = relationship(back_populates='ipos')
 
     def __repr__(self):
         return f'<id: {self.id} Max price per issue: {self.company_id}>'
@@ -49,7 +49,7 @@ class Investor(Base):
     anchor: Mapped[int] = mapped_column(BIGINT, comment='anchor investor holdng')
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
-    ipo: Mapped['Ipo'] = relationship(back_populates='investor')
+    ipo: Mapped['Ipo'] = relationship(back_populates='investors')
 
     def __repr__(self) -> str:
         return f'Invesment in company id {self.id}'
@@ -79,4 +79,4 @@ class Registrar(Base):
     phone:Mapped[str]
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
-    ipo: Mapped['Ipo'] = relationship(back_populates='registrar')
+    ipos: Mapped['Ipo'] = relationship(back_populates='registrar')
