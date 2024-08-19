@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy import insert, Integer, Float, DateTime, func, or_
 from sqlalchemy.orm import Mapped, mapped_column, Session
 from src.db.pgdb_connect import engine
-from src.utils.reqRes import apiError, apiResponse
+from src.utils.reqRes import apiError
 
 
 
@@ -45,10 +45,9 @@ class IndicesTable(Base):
             session.rollback()
             return apiError(400, "Error while fetching n index data")
         finally:
-            session.close()
+            session.close() 
 
-
-    def insert_data(data_dict: dict):
+    def insert_data(self, data_dict: dict):
         try:
             session = Session(engine)
             new_record = IndicesTable(**data_dict)
