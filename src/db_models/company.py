@@ -16,11 +16,10 @@ class Company(Base):
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     updated_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
-    comment = relationship('Comment', back_populates='user', cascade="all, delete-orphan")
-    
-    event = relationship('Event', back_populates='company', cascade='all, delete-orphan')
+    events = relationship('Event', back_populates='company', cascade='all, delete-orphan')
     news = relationship('News', secondary='news_company_association', back_populates='companies', cascade='all, delete-orphan')
-
+    comments = relationship('Comment', secondary='comment_company_association', back_populates='companies', cascade='all, delete-orphan')
+    
     
     def __repr__(self) -> str:
         return f'{self.id} : {self.company_name}'

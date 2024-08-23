@@ -24,7 +24,7 @@ class User(Base):
     updated_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
     feedback = relationship("Feedback", back_populates="user", cascade="all, delete-orphan")
-    comment = relationship('Comment', back_populates="user", cascade="all, delete-orphan")
+    comments = relationship('Comment', back_populates="user", cascade="all, delete-orphan")
 
     #__init__ method is derived from Base
     def __repr__(self) -> str:

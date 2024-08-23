@@ -13,11 +13,11 @@ class Event(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable = False)
     event_date: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
-    comapany_id: Mapped[int] = mapped_column(Integer, ForeignKey('company_table.id'))
+    company_id: Mapped[int] = mapped_column(Integer, ForeignKey('company_table.id'))
     related_to: Mapped[str] = mapped_column(listing_platform_enum, default='general')
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     
-    company = relationship('Company', back_populates='event')
+    company = relationship('Company', back_populates='events')
 
     def __repr__(self) -> str:
         return f'{self.id}: {self.event_date}: {self.name}'

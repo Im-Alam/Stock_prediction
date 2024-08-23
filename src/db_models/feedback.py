@@ -51,8 +51,8 @@ class Comment(Base):
     sentiment : Mapped[int] = mapped_column(Integer, nullable = True)
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
-    user = relationship('User', back_populates='comment')
-    companies = relationship('Company', secondary='comment_company_association', back_populates='comment')
+    user = relationship('User', back_populates='comments')
+    companies = relationship('Company', secondary='comment_company_association', back_populates='comment', cascade='all, delete-orphan')
 
 
     def __repr__(self) -> str:
