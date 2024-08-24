@@ -6,5 +6,6 @@ uploads
 .env
 charts.html
 *.pyc
-*.ipynb
 *.db
+SQLlite.ipynb
+test2.ipynb
