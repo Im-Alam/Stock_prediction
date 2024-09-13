@@ -11,7 +11,7 @@ Model = ai.GenerativeModel(
     'gemini-1.5-flash',
     generation_config=ai.GenerationConfig(
         max_output_tokens=30,
-        temperature=0.6,
+        temperature=0.5,
     ),
     system_instruction='Be concise, non-generic and start with action verbs'
 )
