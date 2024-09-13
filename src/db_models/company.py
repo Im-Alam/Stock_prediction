@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy import Integer, Enum, BIGINT, String, ForeignKey, DateTime, func, or_, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 from src.db.pgdb_connect import engine
-from src.utils.reqRes import apiError, apiResponse
+from src.utils.reqRes import apiError
 
 
 class Company(Base):
@@ -16,13 +16,19 @@ class Company(Base):
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     updated_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
-    events = relationship('Event', back_populates='company', cascade='all, delete-orphan')
-    news = relationship('News', secondary='news_company_association', back_populates='companies', cascade='all, delete-orphan')
-    comments = relationship('Comment', secondary='comment_company_association', back_populates='companies', cascade='all, delete-orphan')
+    events = relationship('Event', 
+                        back_populates='company', 
+                        cascade='all, delete')
+    news = relationship('News', 
+                        secondary='news_company_association', 
+                        back_populates='companies')
+    comments = relationship('Comment', 
+                        secondary='comment_company_association', 
+                        back_populates='companies')
     
     
     def __repr__(self) -> str:
-        return f'{self.id} : {self.company_name}'
+        return (f'{self.id} : {self.company_name}' if self.id and self.company_name else "<Company (no name)>")
     
 
     def insert_or_update_company(company_data: dict):

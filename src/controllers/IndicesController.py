@@ -2,16 +2,44 @@ import pandas as pd
 from datetime import datetime
 from src.db_models.INDEX import IndicesTable
 from src.utils.reqRes import apiError
+import json
 
 """
 1. get daily data of nifty index
 2. Calculate correlation with indian market and foriegn market
 3. Get data of foriegn exchange, make its min to zero by shifting and return the data for plot
-
 """
+
 
 indian_index = ['nifty50','sensex','bank_nifty','nifty_auto', 'nifty_it','nifty_pharma']
 foreign_index = ['dow_jones','nasdaq','s_and_p_500','ftse_100','dax','nikkei_225','shanghai_composite']
+index_tickers = {
+    'nifty50': '^NSEI',                  # NIFTY 50 (India)
+    'sensex': '^BSESN',                  # SENSEX (India)
+    'bank_nifty': '^NSEBANK',            # Bank Nifty (India)
+    'nifty_auto': '^CNXAUTO',            # Nifty Auto (India)
+    'nifty_it': '^CNXIT',                # Nifty IT (India)
+    'nifty_pharma': '^CNXPHARMA',        # Nifty Pharma (India)
+    'dow_jones': '^DJI',                 # Dow Jones (USA)
+    'nasdaq': '^IXIC',                   # NASDAQ (USA)
+    's_and_p_500': '^GSPC',              # S&P 500 (USA)
+    'ftse_100': '^FTSE',                 # FTSE 100 (UK)
+    'dax': '^GDAXI',                     # DAX (Germany)
+    'nikkei_225': '^N225',               # Nikkei 225 (Japan)
+    'shanghai_composite': '000001.SS'     # Shanghai Composite (China)
+}
+
+
+def predict(n_days:int = 5):
+    pass
+
+def display_prediction():
+    pass
+
+def update_prediction():
+    pass
+
+
 
 def calculate_corr():
     """
@@ -54,8 +82,9 @@ def calculate_corr():
         # Calculate the correlation matrix for Foreign indices
         foreign_corr_json = foreign_df.corr().to_json(orient='index')
 
-        return indian_corr_json, foreign_corr_json, indian_data, foreign_data
+        return indian_corr_json, foreign_corr_json, json.dump(indian_data), json.dump(foreign_data)
     except Exception as e:
         return apiError(400, f'{e}')
+
 
 

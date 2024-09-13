@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from src.config import devConfig
 from src.controllers.userController import *
+from src.controllers.newsController import *
 from src.db.initializeDB import createTables
 from flask_cors import CORS
 
@@ -91,6 +92,20 @@ def analyse(fileName):
 @app.route('/IPO_page')
 def ipo_page():
     return render_template('IPOs.main.html')
+
+
+
+@app.route('/news')
+def recent_news():
+    return get_news_by_company_name()
+
+
+
+
+
+
+
+
 
 
 PORT_NO = int(os.getenv('PORT', 5000))#Default to 5000 if PORT not found

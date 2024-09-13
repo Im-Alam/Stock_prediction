@@ -5,3 +5,5 @@ from sqlalchemy.orm import Mapped, mapped_column, Session
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
+#Now we are importing stat from GoI Stats
+#Latter we will ad scrappimg based data in database.

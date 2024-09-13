@@ -15,7 +15,7 @@ class Feedback(Base):
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
     #Each feed back related to a user but each user not related to a feedback
-    user = relationship("User", back_populates="feedback")
+    user = relationship("User", back_populates="feedbacks")
     
 
     def __repr__(self) -> str:
@@ -36,10 +36,6 @@ class Feedback(Base):
             session.close()
         
 
-class CommentCompanyAssociation(Base):
-    __tablename__ = 'comment_company_association'
-    comment_id: Mapped[int] = mapped_column(ForeignKey('user_comment.id', ondelete='CASCADE'), primary_key=True)
-    company_id: Mapped[int] = mapped_column(ForeignKey('company_table.id', ondelete='CASCADE'), primary_key=True)
 
 
 class Comment(Base):
@@ -51,8 +47,12 @@ class Comment(Base):
     sentiment : Mapped[int] = mapped_column(Integer, nullable = True)
     created_at : Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
-    user = relationship('User', back_populates='comments')
-    companies = relationship('Company', secondary='comment_company_association', back_populates='comment', cascade='all, delete-orphan')
+    user = relationship('User', 
+                        back_populates='comments')
+    companies = relationship('Company', 
+                        secondary='comment_company_association', 
+                        back_populates='comments', 
+                        passive_deletes=True)
 
 
     def __repr__(self) -> str:

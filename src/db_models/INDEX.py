@@ -37,7 +37,7 @@ class IndicesTable(Base):
     
 
     @classmethod
-    def fetch_recent_nData(cls, n):
+    def fetch_recent(cls, n:int=50):
         session = Session(engine)
         try:
             return session.query(cls).order_by(cls.timestamp.desc()).limit(n).all()
@@ -48,8 +48,8 @@ class IndicesTable(Base):
             session.close() 
 
     def insert_data(self, data_dict: dict):
+        session = Session(engine)
         try:
-            session = Session(engine)
             new_record = IndicesTable(**data_dict)
             session.add(new_record)
             session.commit()

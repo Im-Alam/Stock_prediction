@@ -1,17 +1,14 @@
 from src.db_models.base import Base
 from src.db_models.company import Company
+from src.db_models.relationships import NewsCompanyAssociation
 from typing import List, Optional
-from sqlalchemy import Integer, String, ForeignKey, DateTime, func, insert, or_, Text, Numeric, join
+from sqlalchemy import Integer, String, ForeignKey, DateTime, func, select, insert, or_, Text, Numeric, join
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
-class NewsCompanyAssociation(Base):
-    __tablename__ = 'news_company_association'
-    news_id : Mapped[int] = mapped_column(ForeignKey('news_table.id', ondelete='CASCADE'), primary_key=True)
-    company_id : Mapped[int] = mapped_column(ForeignKey('company_table.id', ondelete='CASCADE'), primary_key=True)
-    relevance_score : Mapped[Optional[float]] = mapped_column(Numeric)
-    
+
+
 
 class News(Base):
     __tablename__ = 'news_table'
@@ -24,11 +21,11 @@ class News(Base):
     sentiment_statement: Mapped[str] = mapped_column(String, nullable = True)
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
 
-    companies = relationship(Company, secondary='news_company_association', back_populates='news', cascade='all, delete-orphan')
+    companies = relationship(Company, secondary='news_company_association', back_populates='news', passive_deletes=True)
 
     
     def __repr__(self):
-        print(f'{self.id}: {self.headline}')
+        return (f'{self.id}: {self.headline}' if self.id and self.headline else "<News (no headline)>")
 
 
     def insert_news(news_data: dict):
@@ -131,29 +128,26 @@ class News(Base):
         finally:
             session.close()
 
-
-
-    def fetch_recent_news_with_companies(limit: int = 30):
-        """
-        Fetches the most recent news entries along with associated companies.
-
-        Args:
-            limit (int): Number of news entries to fetch. Default is 10.
-        Returns:
-            List of recent news entries with associated companies.
-        """
+    #####
+    def fetch_recent_news(limit_: int = 30):
+        session = Session(engine)
         try:
-            session = Session(engine)
-            recent_news = session.query(News).options(join(News.companies)).order_by(News.id.desc()).limit(limit).all()
-            return recent_news
+            stmt = (select(News, Company)
+                .join(NewsCompanyAssociation, News.id == NewsCompanyAssociation.news_id)
+                .join(Company, NewsCompanyAssociation.company_id == Company.id)
+                .order_by(News.id.desc())
+                .limit(limit_))
+            
+            news_list = session.execute(stmt).all()
+            return news_list
         except Exception as e:
             session.rollback()
-            return apiError(400, "Something went wrong while fetchin general news")
+            return apiError(500, 'Server error')
         finally:
             session.close()
 
 
-        
+    #####    
     def fetch_recent_news_by_company_name(company_name: str, limit: int = 10):
         """
         Fetches the most recent news entries associated with a specific company name.
@@ -168,23 +162,26 @@ class News(Base):
         """
         session = Session(engine)
         try:
-            recent_news = (session.query(News)
-                        .join(News.companies)
-                        .filter(Company.name == company_name)
-                        .order_by(News.id.desc())
-                        .limit(limit)
-                        .all())
+            stmt = (select(News, Company)
+                .join(NewsCompanyAssociation, News.id == NewsCompanyAssociation.news_id)
+                .join(Company, NewsCompanyAssociation.company_id == Company.id)
+                .where(Company.company_name == company_name)
+                .order_by(News.id)
+                .limit(limit))
+            
+            recent_news = session.execute(stmt).all()
+            
             return recent_news
         
         except Exception as e:
             session.rollback()
-            return apiError(400, "Error occured while fetching company wise news")
+            print(e)
+            return e
         finally:
             session.close()
 
 
-    
-    def fetch_n_recent_news_for_each_company(company_names: list, n: int):
+    def fetch_n_recent_news_for_each_company(company_names: list, n: int=5):
         with Session(engine) as session:
             try:
                 # Get the company IDs for the specified company names
@@ -211,3 +208,5 @@ class News(Base):
             except:
                 session.rollback()
                 return apiError(400, "Error occcured in fetching n_details for different company")
+            
+
