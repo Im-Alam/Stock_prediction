@@ -1,8 +1,5 @@
 from src.db_models.news import News
-from src.db_models.relationships import NewsCompanyAssociation
-from src.db_models.company import Company
 from src.utils.reqRes import *
-from collections import defaultdict
 import json
 
 """
