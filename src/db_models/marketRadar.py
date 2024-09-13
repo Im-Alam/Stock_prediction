@@ -6,3 +6,4 @@ from src.db.pgdb_connect import engine
 from src.utils.reqRes import apiError, apiResponse
 
 
+#It will be added latter. It need more analysis of different kinds of market.
