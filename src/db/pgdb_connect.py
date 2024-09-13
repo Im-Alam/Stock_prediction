@@ -1,9 +1,12 @@
 import os
 from sqlalchemy import create_engine
 
-def connectPGDB():
+trail_uri = 'SQL_LITE_URI'
+deployment_uri = 'AIVEN_PG_URI'
+
+def connectPGDB(uri=trail_uri):
     try:
-        engine = create_engine(os.getenv("AIVEN_PG_URI"))
+        engine = create_engine(os.getenv(uri))
         print("Lazy connection setup")
         return engine
     except Exception as e:
