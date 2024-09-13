@@ -23,8 +23,8 @@ class User(Base):
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
     updated_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
-    feedback = relationship("Feedback", back_populates="user", cascade="all, delete-orphan")
-    comments = relationship('Comment', back_populates="user", cascade="all, delete-orphan")
+    feedbacks = relationship("Feedback", back_populates="user", cascade="all, delete")
+    comments = relationship('Comment', back_populates="user", cascade="all, delete")
 
     #__init__ method is derived from Base
     def __repr__(self) -> str:
@@ -122,4 +122,5 @@ class User(Base):
                 }
         token = jwt.encode(payload, os.getenv('REFRESH_TOKEN_SECRET'), algorithm = 'HS256')
         return token
+
 
