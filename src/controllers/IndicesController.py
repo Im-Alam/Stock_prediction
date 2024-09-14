@@ -1,8 +1,10 @@
 import pandas as pd
 from datetime import datetime
 from src.db_models.INDEX import IndicesTable
+from src.ML_models.predictor import predict_next_n_day_price
 from src.utils.reqRes import apiError
 import json
+
 
 """
 1. get daily data of nifty index
@@ -29,12 +31,8 @@ index_tickers = {
     'shanghai_composite': '000001.SS'     # Shanghai Composite (China)
 }
 
-
-def predict(n_days:int = 5):
-    pass
-
-def display_prediction():
-    pass
+def display_prediction(n:int):
+    return predict_next_n_day_price(n)
 
 def update_prediction():
     pass
