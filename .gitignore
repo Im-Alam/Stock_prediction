@@ -2,6 +2,7 @@ Stockenv
 test.py
 test2.py
 test.ipynb
+*.ipynb
 uploads
 .env
 charts.html
